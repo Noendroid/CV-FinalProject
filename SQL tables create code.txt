@@ -1,0 +1,110 @@
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `area` varchar(255) NOT NULL,
+  `about_me` text NOT NULL,
+  `degree` varchar(255) NOT NULL,
+  `created` timestamp NOT NULL default current_timestamp() ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_experience` (
+  `experience_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `created` timestamp NOT NULL default current_timestamp() ,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`experience_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_pro_skills` (
+  `skill_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`skill_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `pro_skills` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_per_skills` (
+  `skill_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`skill_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `per_skills` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_education` (
+  `education_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `created` timestamp NOT NULL default current_timestamp() ,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`education_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_hobbies` (
+  `hobby_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`hobby_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `hobbies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `languages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_languages` (
+  `language_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`language_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `user_social_networks` (
+  `network_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`network_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `social_networks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `icon_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+

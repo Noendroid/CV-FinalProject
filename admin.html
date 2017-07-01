@@ -1,0 +1,91 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Admin | CV Form</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <!-- Google fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/admin.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+
+        <h1>CV Creation & Editing form</h1>
+
+        <section id="app">
+            <ul id="user-list"></ul>
+            <section id="cv-form">
+
+                <form>
+
+                    <fieldset>
+                        <ul class="inputs">
+                            <legend>Basic info</legend>
+                            <ul>
+                                <table>
+                                    <form id="addUserForm">
+                                        <tr>
+                                            <td>First Name</td><td><input type="text" name="first_name"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last Name</td><td><input type="text" name="last_name"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone Number</td><td><input type="text" name="phone"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td><td><input type="text" name="email"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Area</td><td><input type="text" name="area"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>About me</td>
+                                            <td><textarea name="about_me" rows="4" cols="50" form="addUserForm" value="<?php  ?>"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Degree</td><td><input type="text" name="degree"></td>
+                                        </tr>
+                                        <tr>
+                                        	<td colspan="2"><input type="submit" value="Add User"></td>
+                                        </tr>
+                                    </form>
+                                </table>
+                            </ul>
+                        </ul>
+                    </fieldset>
+
+                    <button type="submit">Save</button><a href="#">Show user CV</a>
+
+                </form>
+        </section><!-- /cv -->
+        </section>
+
+
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/admin.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+    </body>
+</html>
