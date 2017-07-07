@@ -39,7 +39,7 @@ $(function(){
 
           $.ajax({ //Send a request to the server with the form content
                  type: "POST",
-                 url: "/user",
+                 url: "/php/addUser.php",
                  data: $("form").serialize(), // serializes the form's data
                  success: function(data) //This code runs when the request was successful
                  {
