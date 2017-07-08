@@ -25,7 +25,6 @@ h2 {
 
 #intro
 {
-    
     display: flex;
     align-items: center;
     border-bottom: 1px solid #a5a5a5;
@@ -68,8 +67,6 @@ h2 {
 {
     border-left: 2px solid #a5a5a5;
     padding: 15px;
-    width: 350px;
-    margin-bottom: 10px;
 }
 #contact-info
 {
@@ -78,7 +75,7 @@ h2 {
 #contact-info ul {
     list-style: none;
 }
-#contact-info ul: first-child
+#contact-info ul :first-child
 {
     font-weight: 600;
 }
@@ -93,148 +90,135 @@ h2 {
     color: #a5a5a5;
     text-decoration:none;
 }
-#experience {
-    display: flex;
-   
-}
-
-.description section
-
-
-#stats section{
+#experience_and_skills {
     display: flex;
 }
-
-#stats ul{
+.secondary_tytle{
+    text-transform: uppercase;
+    font-size: 200%;
+    font-family: cursive;
+    margin-top: 0%;
+    padding-top: 3%
+}
+.description {
+    width: 60%;
+    padding-left: 2%;
+    padding-right: 4%;
+}
+.description section {
+    display: flex;
+}
+.description section aside{
+    margin-right: 4%;
+}
+.description section aside h5{
+    font-size: 150%;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 0%;
+    color: dodgerblue;
+    font-weight: 700;
+    font-family: monospace;
+}
+.description section aside span{
+    margin-right: 0%;
+    margin-top: 0%;
+    font-size: 65%;
+    color: #616161;
+    font-weight: 800;
+}
+.description section article{
+    margin-top: 1%;
+    font-family: cursive;
+}
+.description section article h4{
+    margin-bottom: 0%;
+    color: #212121;
+}
+.description section article p{
+    margin-top: 0%;
+    margin-right: 5%;
+    color: #616161;
+}
+.description :last-child{
+    padding-bottom: 1%;
+}
+#skills {
+    width: 33.3%;
+}
+.skills {
+    width: 100%;
+    height: 50%;
+    padding-left: 2%;
+    font-family: cursive;
+}
+.skills h3{
+    margin-top: 0%;
+    width: 100%;
+    font-size: 200%;
+    margin-left: 8%;
+    margin-bottom: 0%;
+}
+.skills article{
+    margin-top: 0%;
+    display: flex;
+    font-family: cursive;
+    font-weight: bolder;
+}
+.skills article ul{
+    margin-top: 5%;
+    margin-left: 5%;
     list-style: none;
+    font-size: 100%
 }
-
-#pro-skills {
-    background: rgba(33, 189, 235, 0.8);
+.skills article ul li{
+    margin-left: -50%;
 }
-
-#pro-skills li {
-    font-weight: 600;
+#pro_skills {
+    background: #29B6F6;
 }
-
-#per-skills {
-    background: rgba(209, 230, 47, 0.87);
-    
+#per_skills {
+    background: #D4E157;
 }
-
-#per-skills li {
-    font-weight: 600;
+#education {
+    width: auto;
+    background: #EEEEEE;
 }
-
-.palegoldenrod {
-    background-color: #FAFAFA;
-}
-
-.description 
-{
-  flex-basis: 70%   
-}
-.description section
-{
-    display:flex ;
-    flex-direction : row;
-}
-.description section aside
-{
-    text-align:right;
-}
-.description section aside,article
-{
-    padding: 20px;
-}
-.description section aside h5
-{
-   color: #008bf0;
-}
-
-
-#stats 
-{
-  display:flex ;
-  flex-direction: column;
-  flex-basis: 30%;
-      
-}
-
-.skills 
-{  
-  flex-grow: 2; 
-  display : flex;
-  flex-direction:column;
-    
- 
-}
-.skills h3
-{
-    margin-left: 20px;
-}
-.skills ul li 
-{
-   margin-top: 15px; 
-}
-
-.skillsC {
-    display:flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-#education section
-{
-     display: flex;
-}
-
-#education section aside 
-{
-    padding-left: 10px;
-    text-align:right;
-}
-
-#education section aside h5
-{
-    padding-left: 10px;
-    color: #008bf0;
-    text-align:right;
-}
-#personal {
+#hobbies_and_languages{
     display: flex;
-    background: #FAFAFA
+    width: 100%;
 }
-#hobbies ul
-{
-  display: flex; 
+#hobbies {
+    width: 65%;
 }
-
-#hobbies ul li
-{
+#hobbies ul{
+    display: flex;
+}
+#hobbies ul li{
     display: grid;
-    margin: 5px;
+    padding: 3%;
+    align-content: center;
 }
-
-#hobbies ul li i
-{
-    padding-left: 10px;
+#hobbies ul li i{
+    font-size: 250%;
+    text-align: center;
+    margin-bottom: 30%;
 }
-
-#hobbies ul a
-{
-    color: #a5a5a5;
+#hobbies ul li a {
+    color: #37474F;
+    font-weight: 700;
+    font-style: normal;
     text-decoration: none;
 }
-
-#language {
-    list-style: none;
+#languages {
+    width: 35%;
+    background: #F5F5F5;
+}
+#languages section{
     display: flex;
+    font-family: cursive;
+    font-weight: 700;
 }
-
-#language ul{
-    list-style: none;
-}
-
-
+#languages ul{
+    list-style-type: none;
+} 
