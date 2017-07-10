@@ -14,8 +14,9 @@ include_once 'db_connector.php';
         ]
     ];
 
-
-    $sql = "SELECT * FROM users WHERE first_name = '" . $_GET["user"] . "'";
+    //REMEMBER TO CHANGE IT TO TAKE DATA FROM THE ID OF THE USER!!!
+    //NOT BY HIS NAME!!
+    $sql = "SELECT * FROM users WHERE id = '" . $_GET["user_id"] . "'";
     //echo var_dump($sql);
     $result = $mysqli->query($sql);
 

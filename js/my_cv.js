@@ -13,12 +13,12 @@ $(function(){
         }
     };*/
     console.log("sending request");
-    var userName = window.location.hash.substr(1); //Get the section after hash tag from URL, e.g. index.html#Arik return 'Arik'
-    if(userName === '') {
-        alert('No user selected');
+    var user_id = window.location.hash.substr(1); //Get the section after hash tag from URL, e.g. index.html#Arik return 'Arik'
+    console.log("user-> ", user_id);
+    if(user_id === '') {
+        alert('No user id selected');
     } else {
-
-      $.get('http://localhost/cv/php/getUserData.php?user=' + userName, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
+      $.get('http://localhost/CV-FinalProject/php/getUserData.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
           console.log('Got data', data); //We just print whatever we got from the server
           //Basic info
@@ -50,7 +50,6 @@ $(function(){
           }
 
           $ul.insertAfter('#intro');
-
 
       });
 

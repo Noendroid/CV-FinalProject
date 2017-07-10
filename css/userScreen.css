@@ -1,0 +1,15 @@
+#screen {
+    margin-left: 10%;
+}
+#line {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #454545;
+}
+#line td{
+    padding: 20px;
+    border-left-color: #454545;
+    border-left-style: solid;
+    border-left-width: 2px;
+
+}
