@@ -1,10 +1,19 @@
+
+insert into social_networks (name, icon_name) values("facebook", "fa fa-facebook");
+insert into social_networks (name, icon_name) values("linkedin", "fa fa-linkedin");
+insert into social_networks (name, icon_name) values("instagram", "fa fa-instagram");
+insert into social_networks (name, icon_name) values("medium", "fa fa-medium");
+insert into social_networks (name, icon_name) values("website", "fa fa-globe");
+insert into social_networks (name, icon_name) values("google_plus", "fa fa-google-plus");
+
+
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firstname` varchar(255) NOT NULL,
-  `lastname` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `area` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
   `about_me` text NOT NULL,
   `degree` varchar(255) NOT NULL,
   `created` timestamp NOT NULL default current_timestamp() ,
@@ -107,4 +116,3 @@ CREATE TABLE IF NOT EXISTS `social_networks` (
   `icon_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-

@@ -1,5 +1,5 @@
 <?php
-include_once 'db_connector.php';
+    include_once 'db_connector.php';
 
     $dataB = [
         "basicInfo" => [
@@ -14,16 +14,18 @@ include_once 'db_connector.php';
         ]
     ];
 
-    $sql = "SELECT * FROM users WHERE id = '" . $_GET["user_id"] . "'";
+    $sql = "SELECT * FROM social_networks;";
     //echo var_dump($sql);
     $result = $mysqli->query($sql);
 
     if ($result) {
         // output data of each row
         header('Content-Type: application/json');
-        $data = $result->fetch_assoc();
+        while ($a = $result->fetch_assoc()) {
+            $data[] = $a;
+        }
         echo json_encode($data);
     } else{
         echo json_encode($dataB);
     }
-?>
+ ?>

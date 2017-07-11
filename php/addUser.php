@@ -41,7 +41,7 @@ if (isset($_POST) && !empty($_POST)){
 						$_POST['area'],
 						$_POST['about_me'],
 						$_POST['degree']);
-		$query = vsprintf('insert into users (first_name,last_name,phone,email,area,about_me,degree) values ("%s","%s","%s","%s","%s","%s","%s");',$values);
+		$query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree) values ("%s","%s","%s","%s","%s","%s","%s");',$values);
 
 		$res = $mysqli->query($query);
 

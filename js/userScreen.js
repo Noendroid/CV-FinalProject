@@ -1,5 +1,4 @@
 $(function(){
-
     /*
     This section gets all the users from the server and lists them in client
     */
@@ -9,8 +8,8 @@ $(function(){
 
           console.log('Got data', data); //We just print whatever we got from the server
           var html = '';
-          html += "<table class='table_style'>";
-          html += "<tr id='line'>";// starting to build the table
+          html += "<section>";// start of sections
+          html += "<tr id='line'>";
           html += '<td><b>First Name</b></td>';
           html += '<td><b>Last Name</b></td>';
           html += '<td><b>Email</b></td>';
@@ -32,37 +31,5 @@ $(function(){
           html += '</table>';//closing the table
 
           $('#screen').append(html);
-          /*
-          //Basic info
-          $('#intro header h1').text(data.first_name); //Let's use the data from server and pub it on page!
-          $('#intro header h2').text(data.last_name);
-          $('#phone').text(data.phone);
-          $('#area').text(data.area);
-          $('#email').text(data.email);
-          $('#intro article p').text(data.about_me);
-
-
-          //Social networks
-          $ul = $('<ul>', {
-              'id': 'social-networks'
-          });
-
-          for(i in data.socialNetworks) { //We also got the social networks from the server, which is acceable from data.socialNetworks.
-              var $templi = $('<li>');
-
-              $templi.append('<i class="fa fa-'+data.socialNetworks[i].iconName+'"></i>');
-              $templi.append('<a href="'+data.socialNetworks[i].link+'">'+data.socialNetworks[i].name+'</a>');
-
-              $templi.click(function(){
-                  alert($(this).children('a').text() + ' clicked!');
-              });
-
-              //Add the new li element to the ul
-              $ul.append($templi);
-          }
-
-          $ul.insertAfter('#intro');
-          */
-
       });
 });
