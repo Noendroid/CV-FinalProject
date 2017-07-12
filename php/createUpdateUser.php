@@ -1,7 +1,7 @@
 <?php
 include_once 'db_connector.php';
 /*
-'name' => string '' (length=0)
+  'name' => string '' (length=0)
   'last_name' => string '' (length=0)
   'degree' => string '' (length=0)
   'phone' => string '' (length=0)
@@ -72,36 +72,65 @@ if (isset($_POST) && !empty($_POST)){
 			$_POST['email'],
 			$_POST['address'],
 			$_POST['about_me'],
-			$_POST['degree']);
+			$_POST['degree']
+		);
 		$query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
-        values ("%s","%s","%s","%s","%s","%s","%s");',$values_user);// insert to users table
+        values ("%s","%s","%s","%s","%s","%s","%s");', $values_user);// insert to users table
 
 		$res = $mysqli->query($query);
 
-		if ($res) {
+		if ($res) { // if adding the user was a success
 			echo "User Added<br/>";
-            $query_user_id = "SELECT MAX(id) FROM USERS;";
-            $res = $mysqli->query($query_user_id
-			$row = mysqli_fetch_row($res);
-			$user_id = $row[0];
-
-			$query_network_id = "SELECT id FROM social_networks WHERE name='";
-			$res = $mysqli->query($query_user_id
-			while ($row =  mysqli_fetch_row($res)) {
-				if ($row[1] == ) {
-					# code...
+            $query_user_id = "SELECT MAX(id) FROM users;"; // get the user's id in database
+            $res = $mysqli->query($query_user_id);
+			var_dump($res);
+			$res = mysqli_fetch_row($res);
+			$user_id = $res[0]; // save user's id
+			var_dump($user_id);
+			$first_network_key = 7;//array_search('about_me', $_POST) + 1;// get the first network index
+			$query_networks_len = "SELECT COUNT(*) FROM social_networks;"; // number of networks in database
+			$res = $mysqli->query($query_networks_len);
+			$res = mysqli_fetch_row($res);
+			$len = $res[0]; // save number of networks
+			$links = array_slice($_POST, $first_network_key, $len);// put the networks in an array
+			$net = $first_network_key;
+			foreach ($links as $i) { // if there is a link for a specific network
+				if(!empty($i)){
+					$net_name = '';
+					$count = 0;
+					foreach( $_POST as $key => $value  ) {
+					    if ($count > $first_network_key + $len - 2) {
+					    	break;
+					    } else {
+					    	if ($count === $net) {
+					    		$net_name = $key;
+								break;
+					    	}
+					    }
+						$count++;
+					}
+					$query_network_id = "SELECT id FROM social_networks WHERE name='" . $net_name . "';"; // get the id of this network
+					var_dump($query_network_id);
+					$res = $mysqli->query($query_network_id);
+					$res = mysqli_fetch_row($res);
+					$network_id = $res[0]; // save network id
+					// enter the user's link to the database
+					$values_user_networks = array(
+						$network_id,
+						$user_id,
+						$i // the social network link
+					);
+					$query_enter_network = vsprintf("INSERT INTO user_social_networks (network_id, user_id, value)
+					VALUES ('%s','%s','%s');", $values_user_networks); // query for inserting the user's link to database
+					var_dump($query_enter_network);
+					$res = $mysqli->query($query_enter_network);// execute query
+					echo "social network added";
+					$net++;
 				}
 			}
-
-			$values_social_networks = array(
-                $_POST['network_id'],
-                $user_id,
-                $_POST['link']);
-            $query = vsprintf('insert into users (first_name,last_name,phone,email,area,about_me,degree)
-            values ("%s","%s","%s","%s","%s","%s","%s");',$values_user);// insert to users table
+			echo "done social networks!";
 		} else {
             var_dump($query);
-            die();
 			echo "Error adding user<br/>";
         }
     }

@@ -8,7 +8,7 @@ $(function(){
 
           console.log('Got data', data); //We just print whatever we got from the server
           var html = '';
-          html += "<section>";// start of sections
+          html += "<table id='line'>";// start of the table
           html += "<tr id='line'>";
           html += '<td><b>First Name</b></td>';
           html += '<td><b>Last Name</b></td>';
