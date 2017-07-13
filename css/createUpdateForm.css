@@ -50,7 +50,8 @@ h2
 }
 #experience_data {
     border-bottom-style: solid;
-    border-bottom-width: 1px;    
+    border-bottom-width: 1px;
+    padding-bottom: 2%;   
 }
 #skills {
     display: flex
@@ -75,7 +76,8 @@ h2
 }
 #edu_data {
     border-bottom-style: solid;
-    border-bottom-width: 1px;    
+    border-bottom-width: 1px;
+    padding-bottom: 2%;
 }
 #selection {
     display: flex;
