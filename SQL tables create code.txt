@@ -5,6 +5,7 @@ insert into social_networks (name, icon_name) values("instagram", "fa fa-instagr
 insert into social_networks (name, icon_name) values("medium", "fa fa-medium");
 insert into social_networks (name, icon_name) values("website", "fa fa-globe");
 insert into social_networks (name, icon_name) values("google_plus", "fa fa-google-plus");
+insert into social_networks (name, icon_name) values("twitter", "fa fa-twitter");
 
 SELECT * FROM hobbies;
 SELECT * FROM languages;
