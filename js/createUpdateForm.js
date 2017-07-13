@@ -33,7 +33,40 @@ $(function(){
         html += '</section>';// closing the table tytles
 
         $('#social_networks').append(html);
-    });
 
+
+    });
+    /*
+    $("#exp_num").onchange = function(){
+        var experiences = document.getElementsById("#exp_num");
+        var num = experiences.options[experiences.selectedIndex].value;
+        console.log(num);
+        var html = "";
+        for (var i = 0; i < num; i++) {
+            html += "<section id='experience'>";
+            html += "<section>";
+            html += "<input type='text' name='title' placeholder='Title'><br><br>";
+            html += "<input type='text' name='dates' placeholder='Work dates'><br><br>";
+            html += "</section>";
+            html += "<section>";
+            html += "<input type='text' name='company' placeholder='Company name'><br><br>";
+            html += "<textarea rows='4' cols='35' name='description' placeholder='Description'></textarea><br><br>";
+            html += "</section>";
+            html += "</section>";
+        }
+        $('#part3').append(html);
+        /*
+        <section id='experience'>
+            <section>
+                <input type='text' name='title' placeholder='Title'><br><br>
+                <input type='text' name='dates' placeholder='Work dates'><br><br>
+            </section>
+            <section>
+                <input type='text' name='company' placeholder='Company name'><br><br>
+                <textarea rows='4' cols='35' name='description' placeholder='Description'></textarea><br><br>
+            </section>
+        </section>
+
+    };*/
 
 });

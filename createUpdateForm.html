@@ -45,21 +45,29 @@
                 <section id="part2">
                     <h2>Social Networks</h2>
                     <section id="social_networks">
-                        
+
                     </section>
                 </section>
 
                 <section id="part3">
                     <h2>Experience</h2>
-                    <section id="experience">
-                        <section>
-                            <input type="text" name="title" placeholder="Title"><br><br>
-                            <input type="text" name="dates" placeholder="Work dates"><br><br>
-                        </section>
-                        <section>
-                            <input type="text" name="company" placeholder="Company name"><br><br>
-                            <textarea rows="4" cols="35" name="description" placeholder="Description"></textarea><br><br>
-                        </section>
+                    <section id="selection">
+                        <h3>how many sections of experience would you like to fill: </h3>
+                        <select id="exp_num" onchange="experience_change()">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </section>
+                    <section id="experience_data">
                     </section>
                 </section>
 
@@ -83,16 +91,24 @@
                 </section>
 
                 <section id="part5">
-                    <h2>Experience</h2>
-                    <section id="edu">
-                        <section>
-                            <input type="text" name="title" placeholder="Title"><br><br>
-                            <input type="text" name="dates" placeholder="Work dates"><br><br>
-                        </section>
-                        <section>
-                            <input type="text" name="company" placeholder="Company name"><br><br>
-                            <textarea rows="4" cols="35" name="description" placeholder="Description"></textarea><br><br>
-                        </section>
+                    <h2>Education</h2>
+                    <section id="selection">
+                        <h3>how many sections of education would you like to fill: </h3>
+                        <select id="edu_num" onchange="education_change()">
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </section>
+                    <section id="edu_data">
                     </section>
                 </section>
 
@@ -125,10 +141,6 @@
         </form>
 
 
-
-
-
-
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
@@ -142,6 +154,57 @@
             e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+
+            function experience_change(){
+                var num = $("#exp_num").val();
+                var html = "";
+                for (var i = 0; i < num; i++) {
+                    html += "<section id='experience'>";
+                    html += "<section>";
+                    html += "<input type='text' name='title' placeholder='Title'><br><br>";
+                    html += "<input type='text' name='dates' placeholder='Work dates'><br><br>";
+                    html += "</section>";
+                    html += "<section>";
+                    html += "<input type='text' name='company' placeholder='Company name'><br><br>";
+                    html += "<textarea rows='4' cols='35' name='description' placeholder='Description'></textarea><br><br>";
+                    html += "</section>";
+                    html += "</section>";
+                }
+                $('#experience_data').html(html);
+            };
+
+            function education_change(){
+                var num = $("#edu_num").val();
+                var html = "";
+                for (var i = 0; i < num; i++) {
+                    html += "<section id='edu'>";
+                    html += "<section>";
+                    html += "<input type='text' name='title' placeholder='Title'><br><br>";
+                    html += "<input type='text' name='dates' placeholder='Education dates'><br><br>";
+                    html += "</section>";
+                    html += "<section>";
+                    html += "<input type='text' name='place' placeholder='Place'><br><br>";
+                    html += "<textarea rows='4' cols='35' name='description' placeholder='Description'></textarea><br><br>";
+                    html += "</section>";
+                    html += "</section>";
+                }
+                $('#edu_data').html(html);
+                /*
+                <section id="part5">
+                    <h2>Education</h2>
+                    <section id="edu">
+                        <section>
+                            <input type="text" name="title" placeholder="Title"><br><br>
+                            <input type="text" name="dates" placeholder="Education dates"><br><br>
+                        </section>
+                        <section>
+                            <input type="text" name="place" placeholder="Place"><br><br>
+                            <textarea rows="4" cols="35" name="description" placeholder="Description"></textarea><br><br>
+                        </section>
+                    </section>
+                </section>
+                */
+            };
         </script>
     </body>
 </html>
