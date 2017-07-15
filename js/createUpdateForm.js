@@ -89,5 +89,20 @@ $(function(){
         $('#hobbies').append(html);
     });
 
+    //get the languages
+    $.get('http://localhost/CV-FinalProject/php/getLanguages.php', function(data) {
+        console.log('Got the languages', data); //We just print whatever we got from the server
+        var html = '<section>';
+        html += '<h2>Languages</h2>';
+        html += '<ul>';
+        for (var i = 0; i < data.length; i++) {
+            html += "<li>";
+            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " level between 1 - 100'>";
+            html += "</li>";
+        }
+        html += '</ul>';
+        html += "</section>";
+        $('#languages').append(html);
+    });
 
 });

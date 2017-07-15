@@ -102,9 +102,16 @@ h2
 {
     min-width: 45px;
 }
-#hobbie {
+#languages ul {
+    list-style: none;
+    width: 120%;
 }
 input
 {
     width: 90%
+}
+#submit {
+    width: 50%;
+    margin-left: 25%;
+    margin-bottom: 100px;
 }
