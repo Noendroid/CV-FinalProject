@@ -7,6 +7,32 @@ insert into social_networks (name, icon_name) values("website", "fa fa-globe");
 insert into social_networks (name, icon_name) values("google_plus", "fa fa-google-plus");
 insert into social_networks (name, icon_name) values("twitter", "fa fa-twitter");
 
+insert into per_skills (name) values("Creativity");
+insert into per_skills (name) values("Hard Work");
+insert into per_skills (name) values("Team Work");
+insert into per_skills (name) values("Leader Ship");
+
+
+insert into pro_skills (name) values("Photoshop");
+insert into pro_skills (name) values("Illustrator");
+insert into pro_skills (name) values("JavaScript");
+insert into pro_skills (name) values("HTML/CSS");
+
+insert into hobbies (name, icon_name) values("sport", "fa fa-futbol-o");
+insert into hobbies (name, icon_name) values("reading", "fa fa-book");
+insert into hobbies (name, icon_name) values("programming", "fa fa-terminal");
+insert into hobbies (name, icon_name) values("sleeping", "fa fa-bed");
+insert into hobbies (name, icon_name) values("socializing", "fa fa-share-alt");
+insert into hobbies (name, icon_name) values("video games", "fa fa-gamepad");
+
+insert into languages (name) values("English");
+insert into languages (name) values("French");
+insert into languages (name) values("Hebrew");
+insert into languages (name) values("Russian");
+insert into languages (name) values("Arabic");
+insert into languages (name) values("Italian");
+
+
 SELECT * FROM hobbies;
 SELECT * FROM languages;
 SELECT * FROM per_skills;
@@ -109,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `user_hobbies` (
 CREATE TABLE IF NOT EXISTS `hobbies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `icon_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
