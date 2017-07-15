@@ -27,8 +27,8 @@ $(function(){
             }
             html += "<h5>";
             html += data[i].name;
+            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " link'>";
             html += "</h5>";
-            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " link'><br><br>";
         }
         html += '</section>';// closing the table tytles
 
