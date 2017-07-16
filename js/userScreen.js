@@ -23,8 +23,9 @@ $(function(){
               html += "<td><a href='http://localhost/CV-FinalProject/index.html#" + data[index].id + "'>" + data[index].first_name + '</a></td>';
               html += '<td>'+ data[index].last_name +'</td>';
               html += '<td>'+ data[index].email +'</td>';
-              html += '<td>'+ "<input type='submit' value='delete'>" +'</td>';
-              html += '<td>'+ "<input type='submit' value='edit'>" +'</td>';
+              html += '<td>';
+              html += "<input type='button' name='" + data[index].id + "' value='Delete' onclick='deleteUser(this.name)'>" +'</td>';
+              html += '<td>'+ "<input type='button' value='Edit'>" +'</td>';
               html += '</tr>';
               // ending of the user line
           }
