@@ -101,6 +101,9 @@ if (isset($_POST) && !empty($_POST)){
 			$networks_values[] = [$data[$i]['name'], $_POST[$data[$i]['name']]];
 		}
 	}
+	if($all_empty){
+		errs[] = 'Problem with social networks input';
+	}
 	// EXPERIENCE - PART 3
 	$per_skills = "SELECT name FROM per_skills;";
 	$result = $mysqli->query($per_skills);
@@ -112,9 +115,33 @@ if (isset($_POST) && !empty($_POST)){
 	$experience_first = array_search("exp_title_0", array_keys($_POST));
 	$experience_last = array_search($data[0]['name'], array_keys($_POST));
 	$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
-	foreach ($experience_data as $key => $value) {
-		if (!empty($value)) {
+	$counter = 0;
+	foreach ($experience_data as $key => $value) { // for each key and value
+		$counter++;
+		if (!empty($value)) { // if the value is not empty
+			$experience_values = [$key, $value]; // add this value and his key to experience_values
 			$exp_empty = false;
+		}
+		if($counter % 4 == 0){// when we got through 4 elements
+			//we need to check if all the inputs was OK
+			if(sizeof($experience_values) % 4 == 0){
+				$values_exp = array(
+		            $_POST['first_name'],
+					$_POST['last_name'],
+					$_POST['phone'],
+					$_POST['email'],
+					$_POST['address'],
+					$_POST['about_me'],
+					$_POST['degree']
+				);
+				$query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
+		        values ("%s","%s","%s","%s","%s","%s","%s");', $values_user);// insert to users table
+			}
+			else {
+				$errs[] = "Problem with experience input";
+				$exp_empty = true;
+				break;
+			}
 		}
 	}
 	die();

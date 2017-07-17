@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `user_experience` (
   `experience_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `location` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `company` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `per_skills` (
 CREATE TABLE IF NOT EXISTS `user_education` (
   `education_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `location` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
