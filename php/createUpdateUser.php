@@ -1,34 +1,64 @@
 <?php
 include_once 'db_connector.php';
 /*
-  'name' => string '' (length=0)
-  'last_name' => string '' (length=0)
-  'degree' => string '' (length=0)
-  'phone' => string '' (length=0)
-  'address' => string '' (length=0)
-  'email' => string '' (length=0)
-  'about_me' => string '' (length=0)
-  'facebook' => string '' (length=0)
-  'linkedin' => string '' (length=0)
-  'instagram' => string '' (length=0)
-  'website' => string '' (length=0)
-  'medium' => string '' (length=0)
-  'google_plus' => string '' (length=0)
-  'title' => string '' (length=0)
-  'dates' => string '' (length=0)
-  'company' => string '' (length=0)
-  'description' => string '' (length=0)
-  'pro_1' => string '' (length=0)
-  'pro_2' => string '' (length=0)
-  'pro_3' => string '' (length=0)
-  'pro_4' => string '' (length=0)
-  'per_1' => string '' (length=0)
-  'per_2' => string '' (length=0)
-  'per_3' => string '' (length=0)
-  'per_4' => string '' (length=0)
+PART 1
+'first_name' => string '' (length=0)
+'last_name' => string '' (length=0)
+'degree' => string '' (length=0)
+'phone' => string '' (length=0)
+'address' => string '' (length=0)
+'email' => string '' (length=0)
+'about_me' => string '' (length=0)
+PART 2
+'facebook' => string '' (length=0)
+'linkedin' => string '' (length=0)
+'instagram' => string '' (length=0)
+'medium' => string '' (length=0)
+'website' => string '' (length=0)
+'google_plus' => string '' (length=0)
+'twitter' => string '' (length=0)
+PART3
+'exp_title_0' => string '' (length=0)
+'exp_dates_0' => string '' (length=0)
+'exp_company_0' => string '' (length=0)
+'exp_description_0' => string '' (length=0)
+'exp_title_1' => string '' (length=0)
+'exp_dates_1' => string '' (length=0)
+'exp_company_1' => string '' (length=0)
+'exp_description_1' => string '' (length=0)
+'exp_title_2' => string '' (length=0)
+'exp_dates_2' => string '' (length=0)
+'exp_company_2' => string '' (length=0)
+'exp_description_2' => string '' (length=0)
+PART 4
+'Creativity' => string '' (length=0)
+'Hard_Work' => string '' (length=0)
+'Team_Work' => string '' (length=0)
+'Leader_Ship' => string '' (length=0)
+'Photoshop' => string '' (length=0)
+'Illustrator' => string '' (length=0)
+'JavaScript' => string '' (length=0)
+'HTML/CSS' => string '' (length=0)
+PART 5
+'edu_title_0' => string '' (length=0)
+'edu_dates_0' => string '' (length=0)
+'edu_place_0' => string '' (length=0)
+'edu_description_0' => string '' (length=0)
+'edu_title_1' => string '' (length=0)
+'edu_dates_1' => string '' (length=0)
+'edu_place_1' => string '' (length=0)
+'edu_description_1' => string '' (length=0)
+PART 6
+'English' => string '' (length=0)
+'French' => string '' (length=0)
+'Hebrew' => string '' (length=0)
+'Russian' => string '' (length=0)
+'Arabic' => string '' (length=0)
+'Italian' => string '' (length=0)
 */
 if (isset($_POST) && !empty($_POST)){
 	$validated = true;
+	// HEADER - PART 1
 	if (empty($_POST['first_name'])) {
 		$errs[] = "First name is empty";
 		$validated = false;
@@ -57,11 +87,46 @@ if (isset($_POST) && !empty($_POST)){
 		$errs[] = "please tell us somthing about yourself";
 		$validated = false;
 	}
-    if (empty($_POST['facebook']) && empty($_POST['linkedin']) && empty($_POST['instagram']) &&
-     empty($_POST['medium']) && empty($_POST['website']) && empty($_POST['google_plus'])) {
-		$errs[] = "enter at least one link to one of your social networks";
-		$validated = false;
+	// SOCIAL NETWORKS - PART 2
+	$social_networks = "SELECT * FROM social_networks;";
+    $result = $mysqli->query($social_networks);
+	while ($a = $result->fetch_assoc()) {
+		$data[] = $a;
 	}
+	$networks_empty = true;
+	for ($i=0; $i < sizeof($data); $i++) {
+		if(!empty($_POST[$data[$i]['name']])){
+			$all_empty = false;
+			// $networks_values -> [network name, network value]
+			$networks_values[] = [$data[$i]['name'], $_POST[$data[$i]['name']]];
+		}
+	}
+	// EXPERIENCE - PART 3
+	$per_skills = "SELECT name FROM per_skills;";
+	$result = $mysqli->query($per_skills);
+	unset($data);
+	while ($a = $result->fetch_assoc()) {
+		$data[] = $a;
+	}
+	$exp_empty = true;
+	$experience_first = array_search("exp_title_0", array_keys($_POST));
+	$experience_last = array_search($data[0]['name'], array_keys($_POST));
+	$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
+	foreach ($experience_data as $key => $value) {
+		if (!empty($value)) {
+			$exp_empty = false;
+		}
+	}
+	die();
+
+
+
+
+
+
+
+
+
 
 	if ($validated){
 		// insert line to db
