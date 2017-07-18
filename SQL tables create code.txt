@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `user_experience` (
   `end_date` date NOT NULL,
   `description` varchar(255) NOT NULL,
   `created` timestamp NOT NULL default current_timestamp() ,
-  PRIMARY KEY (`experience_id`, `user_id` )
+  PRIMARY KEY (`experience_id` )
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `user_pro_skills` (
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `user_education` (
   `end_date` date NOT NULL,
   `description` varchar(255) NOT NULL,
   `created` timestamp NOT NULL default current_timestamp() ,
-  PRIMARY KEY (`education_id`, `user_id` )
+  PRIMARY KEY (`education_id` )
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `user_hobbies` (

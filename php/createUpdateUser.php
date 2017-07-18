@@ -58,6 +58,12 @@ PART 6
 */
 if (isset($_POST) && !empty($_POST)){
 	$validated = true;
+	$get_user_id_sql = "SELECT MAX(id) FROM users;";
+	$result = $mysqli->query($get_user_id_sql);
+	$user_id = $result->fetch_assoc();
+	$user_id = $user_id['MAX(id)'];
+	$user_id++;//this will be the id for the user
+
 	// HEADER - PART 1
 	if (empty($_POST['first_name'])) {
 		$errs[] = "First name is empty";
@@ -96,16 +102,18 @@ if (isset($_POST) && !empty($_POST)){
 	$networks_empty = true;
 	for ($i=0; $i < sizeof($data); $i++) {
 		if(!empty($_POST[$data[$i]['name']])){
-			$all_empty = false;
+			$networks_empty = false;
 			// $networks_values -> [network name, network value]
 			$networks_values[] = [$data[$i]['name'], $_POST[$data[$i]['name']]];
 		}
 	}
-	if($all_empty){
-		errs[] = 'Problem with social networks input';
+	if($networks_empty){
+		$errs[] = 'Problem with social networks input';
+		$validated = false;
 	}
 	// EXPERIENCE - PART 3
-	$per_skills = "SELECT name FROM per_skills;";
+	$per_skills = "SELECT name FROM per_skills;";//finding the first per skill in the database
+	//this way we will know where the experiences ends in the $_POST
 	$result = $mysqli->query($per_skills);
 	unset($data);
 	while ($a = $result->fetch_assoc()) {
@@ -115,35 +123,43 @@ if (isset($_POST) && !empty($_POST)){
 	$experience_first = array_search("exp_title_0", array_keys($_POST));
 	$experience_last = array_search($data[0]['name'], array_keys($_POST));
 	$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
+	//create a dictionary of the experience section
 	$counter = 0;
 	foreach ($experience_data as $key => $value) { // for each key and value
 		$counter++;
 		if (!empty($value)) { // if the value is not empty
-			$experience_values = [$key, $value]; // add this value and his key to experience_values
+			$experience_values[] = $value; // add this value and his key to experience_values
 			$exp_empty = false;
 		}
-		if($counter % 4 == 0){// when we got through 4 elements
+		if($counter % 5 === 0){// when we got through 4 elements
 			//we need to check if all the inputs was OK
-			if(sizeof($experience_values) % 4 == 0){
+			if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 4
+				// it means that all the fields were full
+				var_dump($experience_values[4]);
 				$values_exp = array(
-		            $_POST['first_name'],
-					$_POST['last_name'],
-					$_POST['phone'],
-					$_POST['email'],
-					$_POST['address'],
-					$_POST['about_me'],
-					$_POST['degree']
+		            $user_id,
+					$experience_values[0],
+					$experience_values[1],
+					$experience_values[2],
+					$experience_values[3],
+					$experience_values[4]
 				);
-				$query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
-		        values ("%s","%s","%s","%s","%s","%s","%s");', $values_user);// insert to users table
+				$queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
+		        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+
 			}
 			else {
 				$errs[] = "Problem with experience input";
+				$validated = false;
 				$exp_empty = true;
 				break;
 			}
+			$counter = 0;
+			unset($experience_values);
 		}
 	}
+	var_dump($queries);
+	var_dump($errs);
 	die();
 
 
