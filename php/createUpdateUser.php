@@ -112,8 +112,9 @@ if (isset($_POST) && !empty($_POST)){
 		$validated = false;
 	}
 	// EXPERIENCE - PART 3
-	$sql_per_skills = "SELECT name FROM per_skills;";//finding the first per skill in the database
-	//this way we will know where the experiences ends in the $_POST
+	// finding the first per skill in the database
+	// this way we will know where the experiences ends in the $_POST
+	$sql_per_skills = "SELECT name FROM per_skills;";
 	$result = $mysqli->query($sql_per_skills);
 	unset($data);
 	while ($a = $result->fetch_assoc()) {
@@ -131,20 +132,20 @@ if (isset($_POST) && !empty($_POST)){
 			$experience_values[] = $value; // add this value and his key to experience_values
 			$exp_empty = false;
 		}
-		if($counter % 5 === 0){// when we got through 4 elements
+		if($counter % 5 === 0){// when we got through 5 elements
 			//we need to check if all the inputs was OK
 			if(isset($experience_values)){
-				if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 4
+				if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 5
 					// it means that all the fields were full
 					$values_exp = array(
 			            $user_id,
 						$experience_values[0],
+						$experience_values[3],
 						$experience_values[1],
 						$experience_values[2],
-						$experience_values[3],
 						$experience_values[4]
 					);
-					$queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
+					$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
 			        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
 				}
 			}
@@ -239,6 +240,52 @@ if (isset($_POST) && !empty($_POST)){
 		}
 	}
 	// EDUCATION - PART 5
+	$sql_languages = "SELECT name FROM languages;";//finding the first per skill in the database
+	//this way we will know where the experiences ends in the $_POST
+	$result = $mysqli->query($sql_languages);
+	unset($data);
+	while ($a = $result->fetch_assoc()) {
+		$data[] = $a;
+	}
+	$edu_empty = true;
+	$education_first = array_search("edu_title_0", array_keys($_POST));
+	$education_last = array_search($data[0]['name'], array_keys($_POST));
+	//create a dictionary of the education section
+	$education_data = array_slice($_POST, $education_first, $education_last - $education_first);
+	$counter = 0;
+	foreach ($education_data as $key => $value) { // for each key and value
+		$counter++;
+		if (!empty($value)) { // if the value is not empty
+			$education_values[] = $value; // add this value and his key to education_values
+			$edu_empty = false;
+		}
+		if($counter % 5 === 0){
+			// when we got through 5 elements we need to check if all the inputs was OK
+			if(isset($education_values)){
+				if(sizeof($education_values) % 5 == 0){// if the number of not values is also 5
+					// it means that all the fields were full
+					$values_edu = array(
+			            $user_id,
+						$education_values[0],
+						$education_values[3],
+						$education_values[1],
+						$education_values[2],
+						$education_values[4]
+					);
+					$education_queries[] = vsprintf('insert into user_education (user_id,title,location,start_date,end_date,description)
+			        values ("%s","%s","%s","%s","%s","%s");', $values_edu);// insert to user_education table
+				}
+			}
+			else {
+				$errs[] = "Something is not right with the education section";
+				$validated = false;
+				$edu_empty = true;
+				break;
+			}
+			$counter = 0;
+			unset($education_values);
+		}
+	}
 	die();
 
 
