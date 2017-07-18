@@ -108,13 +108,13 @@ if (isset($_POST) && !empty($_POST)){
 		}
 	}
 	if($networks_empty){
-		$errs[] = 'Problem with social networks input';
+		$errs[] = 'Something is not right with the social networks section';
 		$validated = false;
 	}
 	// EXPERIENCE - PART 3
-	$per_skills = "SELECT name FROM per_skills;";//finding the first per skill in the database
+	$sql_per_skills = "SELECT name FROM per_skills;";//finding the first per skill in the database
 	//this way we will know where the experiences ends in the $_POST
-	$result = $mysqli->query($per_skills);
+	$result = $mysqli->query($sql_per_skills);
 	unset($data);
 	while ($a = $result->fetch_assoc()) {
 		$data[] = $a;
@@ -133,23 +133,23 @@ if (isset($_POST) && !empty($_POST)){
 		}
 		if($counter % 5 === 0){// when we got through 4 elements
 			//we need to check if all the inputs was OK
-			if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 4
-				// it means that all the fields were full
-				var_dump($experience_values[4]);
-				$values_exp = array(
-		            $user_id,
-					$experience_values[0],
-					$experience_values[1],
-					$experience_values[2],
-					$experience_values[3],
-					$experience_values[4]
-				);
-				$queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
-		        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
-
+			if(isset($experience_values)){
+				if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 4
+					// it means that all the fields were full
+					$values_exp = array(
+			            $user_id,
+						$experience_values[0],
+						$experience_values[1],
+						$experience_values[2],
+						$experience_values[3],
+						$experience_values[4]
+					);
+					$queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
+			        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+				}
 			}
 			else {
-				$errs[] = "Problem with experience input";
+				$errs[] = "Something is not right with the experience section";
 				$validated = false;
 				$exp_empty = true;
 				break;
@@ -158,8 +158,87 @@ if (isset($_POST) && !empty($_POST)){
 			unset($experience_values);
 		}
 	}
-	var_dump($queries);
-	var_dump($errs);
+	// SKILLS - PART 4
+	// get all the per and pro skills
+	$sql_per_skills = "SELECT * FROM per_skills;";
+	$sql_pro_skills = "SELECT * FROM pro_skills;";
+	// commit the queries to the database
+	$per_result = $mysqli->query($sql_per_skills);
+	$pro_result = $mysqli->query($sql_pro_skills);
+	// fetch the data from the database
+	while ($a = $per_result->fetch_assoc()) {
+		$per_skills[] = $a;
+	}
+	while ($a = $pro_result->fetch_assoc()) {
+		$pro_skills[] = $a;
+	}
+	// get number of per and pro skills
+	$per_len = sizeof($per_skills);
+	$pro_len = sizeof($pro_skills);
+	// get the data from $_POST
+	$per_first = array_search($per_skills[0]['name'], array_keys($_POST));
+	$per_data = array_slice($_POST, $per_first, $per_len);
+	$pro_first = array_search($pro_skills[0]['name'], array_keys($_POST));
+	$pro_data = array_slice($_POST, $pro_first, $pro_len);
+	$per_empty = true;
+	$pro_empty = true;
+	$counter = 0;
+	// check if all the data in per skills in correct
+	foreach ($per_data as $key => $value) {
+		if(!empty($value)){
+			if(!is_numeric($value)){
+				$validated = false;
+				$errs[] = "Somthing is not right with per skills";
+				break;
+			}
+			else {
+				if($value < 0 or $value > 100){
+					$validated = false;
+					$errs[] = "Somthing is not right with pro skills";
+					break;
+				}
+				else if($value != 0){
+					$per_values = array(
+						$per_skills[$counter]['id'],
+						$user_id,
+						$value
+					);
+					$per_queries[] = vsprintf('insert into user_per_skills (skill_id,user_id,value)
+					values ("%s","%s","%s");', $per_values);// insert to user_per_skills table
+				}
+			}
+			$counter++;
+		}
+	}
+	// check if all the data in pro skills in correct
+	$counter = 0;
+	foreach ($pro_data as $key => $value) {
+		if(!empty($value)){
+			if(!is_numeric($value)){
+				$validated = false;
+				$errs[] = "Somthing is not right with pro skills";
+				break;
+			}
+			else {
+				if($value < 0 or $value > 100){
+					$validated = false;
+					$errs[] = "Somthing is not right with pro skills";
+					break;
+				}
+				else if($value != 0){
+					$pro_values = array(
+						$pro_skills[$counter]['id'],
+						$user_id,
+						$value
+					);
+					$pro_queries[] = vsprintf('insert into user_pro_skills (skill_id,user_id,value)
+					values ("%s","%s","%s");', $pro_values);// insert to user_pro_skills table
+				}
+			}
+			$counter++;
+		}
+	}
+	// EDUCATION - PART 5
 	die();
 
 
