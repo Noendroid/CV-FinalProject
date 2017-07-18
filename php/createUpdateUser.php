@@ -2,59 +2,66 @@
 include_once 'db_connector.php';
 /*
 PART 1
-'first_name' => string '' (length=0)
-'last_name' => string '' (length=0)
-'degree' => string '' (length=0)
-'phone' => string '' (length=0)
-'address' => string '' (length=0)
-'email' => string '' (length=0)
-'about_me' => string '' (length=0)
+	'first_name' => string '' (length=0)
+	'last_name' => string '' (length=0)
+	'degree' => string '' (length=0)
+	'phone' => string '' (length=0)
+	'address' => string '' (length=0)
+	'email' => string '' (length=0)
+	'about_me' => string '' (length=0)
 PART 2
-'facebook' => string '' (length=0)
-'linkedin' => string '' (length=0)
-'instagram' => string '' (length=0)
-'medium' => string '' (length=0)
-'website' => string '' (length=0)
-'google_plus' => string '' (length=0)
-'twitter' => string '' (length=0)
+	'facebook' => string '' (length=0)
+	'linkedin' => string '' (length=0)
+	'instagram' => string '' (length=0)
+	'medium' => string '' (length=0)
+	'website' => string '' (length=0)
+	'google_plus' => string '' (length=0)
+	'twitter' => string '' (length=0)
 PART3
-'exp_title_0' => string '' (length=0)
-'exp_dates_0' => string '' (length=0)
-'exp_company_0' => string '' (length=0)
-'exp_description_0' => string '' (length=0)
-'exp_title_1' => string '' (length=0)
-'exp_dates_1' => string '' (length=0)
-'exp_company_1' => string '' (length=0)
-'exp_description_1' => string '' (length=0)
-'exp_title_2' => string '' (length=0)
-'exp_dates_2' => string '' (length=0)
-'exp_company_2' => string '' (length=0)
-'exp_description_2' => string '' (length=0)
+	'exp_title_0' => string '' (length=0)
+	'exp_dates_0' => string '' (length=0)
+	'exp_company_0' => string '' (length=0)
+	'exp_description_0' => string '' (length=0)
+	'exp_title_1' => string '' (length=0)
+	'exp_dates_1' => string '' (length=0)
+	'exp_company_1' => string '' (length=0)
+	'exp_description_1' => string '' (length=0)
+	'exp_title_2' => string '' (length=0)
+	'exp_dates_2' => string '' (length=0)
+	'exp_company_2' => string '' (length=0)
+	'exp_description_2' => string '' (length=0)
 PART 4
-'Creativity' => string '' (length=0)
-'Hard_Work' => string '' (length=0)
-'Team_Work' => string '' (length=0)
-'Leader_Ship' => string '' (length=0)
-'Photoshop' => string '' (length=0)
-'Illustrator' => string '' (length=0)
-'JavaScript' => string '' (length=0)
-'HTML/CSS' => string '' (length=0)
+	'Creativity' => string '' (length=0)
+	'Hard_Work' => string '' (length=0)
+	'Team_Work' => string '' (length=0)
+	'Leader_Ship' => string '' (length=0)
+	'Photoshop' => string '' (length=0)
+	'Illustrator' => string '' (length=0)
+	'JavaScript' => string '' (length=0)
+	'HTML/CSS' => string '' (length=0)
 PART 5
-'edu_title_0' => string '' (length=0)
-'edu_dates_0' => string '' (length=0)
-'edu_place_0' => string '' (length=0)
-'edu_description_0' => string '' (length=0)
-'edu_title_1' => string '' (length=0)
-'edu_dates_1' => string '' (length=0)
-'edu_place_1' => string '' (length=0)
-'edu_description_1' => string '' (length=0)
+	'edu_title_0' => string '' (length=0)
+	'edu_dates_0' => string '' (length=0)
+	'edu_place_0' => string '' (length=0)
+	'edu_description_0' => string '' (length=0)
+	'edu_title_1' => string '' (length=0)
+	'edu_dates_1' => string '' (length=0)
+	'edu_place_1' => string '' (length=0)
+	'edu_description_1' => string '' (length=0)
 PART 6
-'English' => string '' (length=0)
-'French' => string '' (length=0)
-'Hebrew' => string '' (length=0)
-'Russian' => string '' (length=0)
-'Arabic' => string '' (length=0)
-'Italian' => string '' (length=0)
+	'sport' => string 'sport' (length=5)
+	'reading' => string 'reading' (length=7)
+	'programming' => string 'programming' (length=11)
+	'sleeping' => string 'sleeping' (length=8)
+	'socializing' => string 'socializing' (length=11)
+	'video_games' => string 'video games' (length=11)
+PART 7
+	'English' => string '' (length=0)
+	'French' => string '' (length=0)
+	'Hebrew' => string '' (length=0)
+	'Russian' => string '' (length=0)
+	'Arabic' => string '' (length=0)
+	'Italian' => string '' (length=0)
 */
 if (isset($_POST) && !empty($_POST)){
 	$validated = true;
@@ -239,9 +246,22 @@ if (isset($_POST) && !empty($_POST)){
 			$counter++;
 		}
 	}
-	// EDUCATION - PART 5
-	$sql_languages = "SELECT name FROM languages;";//finding the first per skill in the database
+	// EDUCATION - PART 5 & 6
+	//finding the first per skill in the database
 	//this way we will know where the experiences ends in the $_POST
+	/*
+	get all the hobbies from the database;
+	find all the hobbies that were checked in the form;
+		(save the index of the first hobby that in $_POST)
+		if none of them is checked than break and show an ERROR;
+	create queries of those hobbies;
+
+	by using the index of the first hobby we can find the undex where the education ends;
+		if this index not exists we need to find the index of the first language in $_POST
+	*/
+	$sql_hobbies = "SELECT name FROM hobbies;";
+	$sql_languages = "SELECT name FROM languages;";
+	$result = $mysqli->query($sql_hobbies);
 	$result = $mysqli->query($sql_languages);
 	unset($data);
 	while ($a = $result->fetch_assoc()) {
