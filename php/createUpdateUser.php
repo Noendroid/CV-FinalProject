@@ -246,7 +246,7 @@ if (isset($_POST) && !empty($_POST)){
 			$counter++;
 		}
 	}
-	// EDUCATION - PART 5 & 6
+	// EDUCATION - PART 5
 	/*
 	get all the hobbies from the database;
 	find all the hobbies that were checked in the form;
@@ -267,7 +267,7 @@ if (isset($_POST) && !empty($_POST)){
 	}
 	// find the first index of hobbies in $_POST
 	foreach ($data as $value) {
-		if($first_hobbie = array_search($value['name'], array_keys($_POST))){
+		if($hobbies_first = array_search($value['name'], array_keys($_POST))){
 			break;
 		}
 	}
@@ -279,14 +279,13 @@ if (isset($_POST) && !empty($_POST)){
 	}
 	// find the first index of languages in $_POST
 	foreach ($data as $value) {
-		if($first_language = array_search($value['name'], array_keys($_POST))){
-			var_dump($first_language);
+		if($language_first = array_search($value['name'], array_keys($_POST))){
 			break;
 		}
 	}
 	$edu_empty = true;
 	$education_first = array_search("edu_title_0", array_keys($_POST));
-	$education_last = (!empty($first_hobbie) ? $first_hobbie : $first_language);
+	$education_last = (!empty($hobbies_first) ? $hobbies_first : $language_first);
 	//create a dictionary of the education section
 	$education_data = array_slice($_POST, $education_first, $education_last - $education_first);
 	$counter = 0;
@@ -322,6 +321,26 @@ if (isset($_POST) && !empty($_POST)){
 			$counter = 0;
 			unset($education_values);
 		}
+	}
+	// HOBBIES - PART 6
+	if(!empty($hobbies_first)){
+		$hobbies_data = array_slice($_POST, $hobbies_first, $language_first - $hobbies_first);
+		foreach ($hobbies_data as $key => $value) {
+			$hobby_sql = "SELECT id FROM hobbies WHERE name='" . $key . "';";
+			$result = $mysqli->query($hobby_sql);
+			$hobby_id = $result->fetch_assoc()['id'];
+			$hobbies_values = array(
+				$hobby_id,
+				$user_id,
+				$value
+			);
+			$hobbies_queries[] = vsprintf('insert into user_hobbies (hobby_id,user_id,value)
+			values ("%s","%s","%s");', $hobbies_values);// insert to user_hobbies table
+		}
+	}
+	else{
+		$validated = false;
+		$errs[] = "please tell us about your hobbies";
 	}
 	die();
 
