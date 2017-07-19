@@ -69,8 +69,8 @@ if (isset($_POST) && !empty($_POST)){
 	$result = $mysqli->query($get_user_id_sql);
 	$user_id = $result->fetch_assoc();
 	$user_id = $user_id['MAX(id)'];
-	$user_id++;//this will be the id for the user
-
+	//this will be the id for the user
+	$user_id++;
 	// HEADER - PART 1
 	if (empty($_POST['first_name'])) {
 		$errs[] = "First name is empty";
@@ -92,13 +92,30 @@ if (isset($_POST) && !empty($_POST)){
 		$errs[] = "adress is empty";
 		$validated = false;
 	}
-	if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+	if (empty($_POST['email'])) {
+		$errs[] = "email is empty";
+		$validated = false;
+	}
+	elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 		$errs[] = "Email should be an email";
 		$validated = false;
 	}
 	if (empty($_POST['about_me'])) {
-		$errs[] = "please tell us somthing about yourself";
+		$errs[] = "Tell us somthing about yourself";
 		$validated = false;
+	}
+	if($validated){
+		$user_values = array(
+            $_POST['first_name'],
+			$_POST['last_name'],
+			$_POST['phone'],
+			$_POST['email'],
+			$_POST['address'],
+			$_POST['about_me'],
+			$_POST['degree']
+		);
+		$users_query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
+        values ("%s","%s","%s","%s","%s","%s","%s");', $user_values);// insert to users table
 	}
 	// SOCIAL NETWORKS - PART 2
 	$social_networks = "SELECT * FROM social_networks;";
@@ -107,11 +124,21 @@ if (isset($_POST) && !empty($_POST)){
 		$data[] = $a;
 	}
 	$networks_empty = true;
-	for ($i=0; $i < sizeof($data); $i++) {
-		if(!empty($_POST[$data[$i]['name']])){
+	$networks_first = array_search($data[0]['name'], array_keys($_POST));
+	$networks_data = array_slice($_POST, $networks_first, sizeof($data));
+	foreach ($networks_data as $key => $value) {
+		if(!empty($value)){
 			$networks_empty = false;
-			// $networks_values -> [network name, network value]
-			$networks_values[] = [$data[$i]['name'], $_POST[$data[$i]['name']]];
+			$networks_sql = "SELECT id FROM social_networks WHERE name='" . $key . "';";
+			$result = $mysqli->query($networks_sql);
+			$network_id = $result->fetch_assoc()['id'];
+			$networks_values = array(
+				$network_id,
+				$user_id,
+				$value
+			);
+			$networks_query[] = vsprintf('insert into user_social_networks (network_id,user_id,value)
+	        values ("%s","%s","%s");', $networks_values);// insert to users table
 		}
 	}
 	if($networks_empty){
@@ -128,43 +155,48 @@ if (isset($_POST) && !empty($_POST)){
 		$data[] = $a;
 	}
 	$exp_empty = true;
-	$experience_first = array_search("exp_title_0", array_keys($_POST));
-	$experience_last = array_search($data[0]['name'], array_keys($_POST));
-	$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
-	//create a dictionary of the experience section
-	$counter = 0;
-	foreach ($experience_data as $key => $value) { // for each key and value
-		$counter++;
-		if (!empty($value)) { // if the value is not empty
-			$experience_values[] = $value; // add this value and his key to experience_values
-			$exp_empty = false;
-		}
-		if($counter % 5 === 0){// when we got through 5 elements
-			//we need to check if all the inputs was OK
-			if(isset($experience_values)){
-				if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 5
-					// it means that all the fields were full
-					$values_exp = array(
-			            $user_id,
-						$experience_values[0],
-						$experience_values[3],
-						$experience_values[1],
-						$experience_values[2],
-						$experience_values[4]
-					);
-					$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
-			        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+	if($experience_first = array_search("exp_title_0", array_keys($_POST))){
+		$experience_last = array_search($data[0]['name'], array_keys($_POST));
+		$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
+		//create a dictionary of the experience section
+		$counter = 0;
+		foreach ($experience_data as $key => $value) { // for each key and value
+			$counter++;
+			if (!empty($value)) { // if the value is not empty
+				$experience_values[] = $value; // add this value and his key to experience_values
+				$exp_empty = false;
+			}
+			if($counter % 5 === 0){// when we got through 5 elements
+				//we need to check if all the inputs was OK
+				if(isset($experience_values)){
+					if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 5
+						// it means that all the fields were full
+						$values_exp = array(
+				            $user_id,
+							$experience_values[0],
+							$experience_values[3],
+							$experience_values[1],
+							$experience_values[2],
+							$experience_values[4]
+						);
+						$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
+				        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+					}
 				}
+				else {
+					$errs[] = "Something is not right with the experience section";
+					$validated = false;
+					$exp_empty = true;
+					break;
+				}
+				$counter = 0;
+				unset($experience_values);
 			}
-			else {
-				$errs[] = "Something is not right with the experience section";
-				$validated = false;
-				$exp_empty = true;
-				break;
-			}
-			$counter = 0;
-			unset($experience_values);
 		}
+	}
+	else {
+		$errs[] = "Tell at least about one experience";
+		$validated = false;
 	}
 	// SKILLS - PART 4
 	// get all the per and pro skills
@@ -358,6 +390,12 @@ if (isset($_POST) && !empty($_POST)){
 			break;
 		}
 	}
+	var_dump($errs);
+	var_dump();
+	var_dump();
+	var_dump();
+	var_dump();
+
 	die();
 	var_dump();
 
