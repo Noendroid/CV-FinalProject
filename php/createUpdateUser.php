@@ -247,16 +247,6 @@ if (isset($_POST) && !empty($_POST)){
 		}
 	}
 	// EDUCATION - PART 5
-	/*
-	get all the hobbies from the database;
-	find all the hobbies that were checked in the form;
-		(save the index of the first hobby that in $_POST)
-		if none of them is checked than break and show an ERROR;
-	create queries of those hobbies;
-
-	by using the index of the first hobby we can find the undex where the education ends;
-		if this index not exists we need to find the index of the first language in $_POST
-	*/
 	$sql_hobbies = "SELECT name FROM hobbies;";
 	$sql_languages = "SELECT name FROM languages;";
 	$result = $mysqli->query($sql_hobbies);
@@ -279,13 +269,13 @@ if (isset($_POST) && !empty($_POST)){
 	}
 	// find the first index of languages in $_POST
 	foreach ($data as $value) {
-		if($language_first = array_search($value['name'], array_keys($_POST))){
+		if($languages_first = array_search($value['name'], array_keys($_POST))){
 			break;
 		}
 	}
 	$edu_empty = true;
 	$education_first = array_search("edu_title_0", array_keys($_POST));
-	$education_last = (!empty($hobbies_first) ? $hobbies_first : $language_first);
+	$education_last = (!empty($hobbies_first) ? $hobbies_first : $languages_first);
 	//create a dictionary of the education section
 	$education_data = array_slice($_POST, $education_first, $education_last - $education_first);
 	$counter = 0;
@@ -324,7 +314,7 @@ if (isset($_POST) && !empty($_POST)){
 	}
 	// HOBBIES - PART 6
 	if(!empty($hobbies_first)){
-		$hobbies_data = array_slice($_POST, $hobbies_first, $language_first - $hobbies_first);
+		$hobbies_data = array_slice($_POST, $hobbies_first, $languages_first - $hobbies_first);
 		foreach ($hobbies_data as $key => $value) {
 			$hobby_sql = "SELECT id FROM hobbies WHERE name='" . $key . "';";
 			$result = $mysqli->query($hobby_sql);
@@ -342,7 +332,34 @@ if (isset($_POST) && !empty($_POST)){
 		$validated = false;
 		$errs[] = "please tell us about your hobbies";
 	}
+	// LANGUAGES - PART 7
+	if(!empty($languages_first)){
+		$languages_data = array_slice($_POST, $languages_first);
+		foreach ($languages_data as $key => $value) {
+			if(is_numeric($value)){
+				if($value >= 0 and $value <= 100){
+					if($value != 0){
+						$languages_sql = "SELECT id FROM languages WHERE name='" . $key . "';";
+						$result = $mysqli->query($languages_sql);
+						$language_id = $result->fetch_assoc()['id'];
+						$languages_values = array(
+							$language_id,
+							$user_id,
+							$value
+						);
+						$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
+						values ("%s","%s","%s");', $languages_values);// insert to user_languages table
+					}
+					continue;
+				}
+			}
+			$validated = false;
+			$errs[] = "Somthing is wrong with the languages section";
+			break;
+		}
+	}
 	die();
+	var_dump();
 
 
 
