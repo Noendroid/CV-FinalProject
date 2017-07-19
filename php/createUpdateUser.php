@@ -247,8 +247,6 @@ if (isset($_POST) && !empty($_POST)){
 		}
 	}
 	// EDUCATION - PART 5 & 6
-	//finding the first per skill in the database
-	//this way we will know where the experiences ends in the $_POST
 	/*
 	get all the hobbies from the database;
 	find all the hobbies that were checked in the form;
@@ -262,14 +260,33 @@ if (isset($_POST) && !empty($_POST)){
 	$sql_hobbies = "SELECT name FROM hobbies;";
 	$sql_languages = "SELECT name FROM languages;";
 	$result = $mysqli->query($sql_hobbies);
+	unset($data);
+	// fetch hobbies from database
+	while ($a = $result->fetch_assoc()) {
+		$data[] = $a;
+	}
+	// find the first index of hobbies in $_POST
+	foreach ($data as $value) {
+		if($first_hobbie = array_search($value['name'], array_keys($_POST))){
+			break;
+		}
+	}
 	$result = $mysqli->query($sql_languages);
+	// fetch hobbies from database
 	unset($data);
 	while ($a = $result->fetch_assoc()) {
 		$data[] = $a;
 	}
+	// find the first index of languages in $_POST
+	foreach ($data as $value) {
+		if($first_language = array_search($value['name'], array_keys($_POST))){
+			var_dump($first_language);
+			break;
+		}
+	}
 	$edu_empty = true;
 	$education_first = array_search("edu_title_0", array_keys($_POST));
-	$education_last = array_search($data[0]['name'], array_keys($_POST));
+	$education_last = (!empty($first_hobbie) ? $first_hobbie : $first_language);
 	//create a dictionary of the education section
 	$education_data = array_slice($_POST, $education_first, $education_last - $education_first);
 	$counter = 0;
@@ -307,6 +324,11 @@ if (isset($_POST) && !empty($_POST)){
 		}
 	}
 	die();
+
+
+
+
+
 
 
 

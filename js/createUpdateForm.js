@@ -80,7 +80,8 @@ $(function(){
             html += "<input type='checkbox' name='" + data[i].name + "' value='" + data[i].name + "'><br>";
             html += "</td>";
             html += "<td>";
-            html += data[i].name;
+            var name = data[i].name.replace("_"," ");
+            html += name;
             html += "</td>";
             html += "</tr>";
         }

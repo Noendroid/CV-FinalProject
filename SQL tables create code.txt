@@ -23,7 +23,7 @@ insert into hobbies (name, icon_name) values("reading", "fa fa-book");
 insert into hobbies (name, icon_name) values("programming", "fa fa-terminal");
 insert into hobbies (name, icon_name) values("sleeping", "fa fa-bed");
 insert into hobbies (name, icon_name) values("socializing", "fa fa-share-alt");
-insert into hobbies (name, icon_name) values("video games", "fa fa-gamepad");
+insert into hobbies (name, icon_name) values("video_games", "fa fa-gamepad");
 
 insert into languages (name) values("English");
 insert into languages (name) values("French");
