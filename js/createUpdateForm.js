@@ -98,7 +98,7 @@ $(function(){
         html += '<ul>';
         for (var i = 0; i < data.length; i++) {
             html += "<li>";
-            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " level between 0 - 100'>";
+            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " level between 1 - 100'>";
             html += "</li>";
         }
         html += '</ul>';

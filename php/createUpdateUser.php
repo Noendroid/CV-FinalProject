@@ -137,7 +137,7 @@ if (isset($_POST) && !empty($_POST)){
 				$user_id,
 				$value
 			);
-			$networks_query[] = vsprintf('insert into user_social_networks (network_id,user_id,value)
+			$networks_queries[] = vsprintf('insert into user_social_networks (network_id,user_id,value)
 	        values ("%s","%s","%s");', $networks_values);// insert to users table
 		}
 	}
@@ -276,7 +276,6 @@ if (isset($_POST) && !empty($_POST)){
 				}
 			}
 			$counter++;
-		}
 	}
 	// EDUCATION - PART 5
 	$sql_hobbies = "SELECT name FROM hobbies;";
@@ -288,7 +287,7 @@ if (isset($_POST) && !empty($_POST)){
 		$data[] = $a;
 	}
 	// find the first index of hobbies in $_POST
-	foreach ($data as $value) {
+	foreach ($data as $key => $value) {
 		if($hobbies_first = array_search($value['name'], array_keys($_POST))){
 			break;
 		}
@@ -309,6 +308,7 @@ if (isset($_POST) && !empty($_POST)){
 	$education_first = array_search("edu_title_0", array_keys($_POST));
 	$education_last = (!empty($hobbies_first) ? $hobbies_first : $languages_first);
 	//create a dictionary of the education section
+}
 	$education_data = array_slice($_POST, $education_first, $education_last - $education_first);
 	$counter = 0;
 	foreach ($education_data as $key => $value) { // for each key and value
@@ -317,25 +317,31 @@ if (isset($_POST) && !empty($_POST)){
 			$education_values[] = $value; // add this value and his key to education_values
 			$edu_empty = false;
 		}
-		if($counter % 5 === 0){
+		if($counter === 5){
 			// when we got through 5 elements we need to check if all the inputs was OK
 			if(isset($education_values)){
-				if(sizeof($education_values) % 5 == 0){// if the number of not values is also 5
+				if(sizeof($education_values) === 5){// if the number of not values is also 5
 					// it means that all the fields were full
 					$values_edu = array(
 			            $user_id,
-						$education_values[0],
-						$education_values[3],
-						$education_values[1],
-						$education_values[2],
-						$education_values[4]
+						$education_values[0],//title
+						$education_values[3],//location
+						$education_values[1],//start
+						$education_values[2],//end
+						$education_values[4]//description
 					);
 					$education_queries[] = vsprintf('insert into user_education (user_id,title,location,start_date,end_date,description)
 			        values ("%s","%s","%s","%s","%s","%s");', $values_edu);// insert to user_education table
 				}
+				else {
+					$errs[] = "Something is not right with the education section(SIZE)" . sizeof($education_values);
+					$validated = false;
+					$edu_empty = true;
+					break;
+				}
 			}
 			else {
-				$errs[] = "Something is not right with the education section";
+				$errs[] = "Something is not right with the education section(ISSET)";
 				$validated = false;
 				$edu_empty = true;
 				break;
@@ -367,35 +373,58 @@ if (isset($_POST) && !empty($_POST)){
 	// LANGUAGES - PART 7
 	if(!empty($languages_first)){
 		$languages_data = array_slice($_POST, $languages_first);
+		$languages_error = false;
 		foreach ($languages_data as $key => $value) {
 			if(is_numeric($value)){
-				if($value >= 0 and $value <= 100){
-					if($value != 0){
-						$languages_sql = "SELECT id FROM languages WHERE name='" . $key . "';";
-						$result = $mysqli->query($languages_sql);
-						$language_id = $result->fetch_assoc()['id'];
-						$languages_values = array(
-							$language_id,
-							$user_id,
-							$value
-						);
-						$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
-						values ("%s","%s","%s");', $languages_values);// insert to user_languages table
-					}
+				if($value > 0 and $value <= 100){
+					$languages_sql = "SELECT id FROM languages WHERE name='" . $key . "';";
+					$result = $mysqli->query($languages_sql);
+					$language_id = $result->fetch_assoc()['id'];
+					$languages_values = array(
+						$language_id,
+						$user_id,
+						$value
+					);
+					$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
+					values ("%s","%s","%s");', $languages_values);// insert to user_languages table
 					continue;
 				}
+				else {
+					$languages_error = true;
+				}
 			}
-			$validated = false;
-			$errs[] = "Somthing is wrong with the languages section";
-			break;
+			else {
+				if(!empty($value) and !is_numeric($value)){
+					$languages_error = true;
+				}
+			}
+			if ($languages_error) {
+				$validated = false;
+				$errs[] = "Somthing is wrong with the languages section";
+				break;
+			}
+		}
+		if(!isset($languages_queries)){
+			if(!$languages_error){
+				$validated = false;
+				$errs[] = "Somthing is wrong with the languages section";
+			}
 		}
 	}
-	var_dump($errs);
-	var_dump();
-	var_dump();
-	var_dump();
-	var_dump();
 
+	if($validated){
+		var_dump($users_query);
+		var_dump($networks_queries);
+		var_dump($experience_queries);
+		var_dump($per_queries);
+		var_dump($pro_queries);
+		var_dump($education_queries);
+		var_dump($hobbies_queries);
+		var_dump($languages_queries);
+	}
+	else{
+		var_dump($errs);
+	}
 	die();
 	var_dump();
 
