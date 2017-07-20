@@ -413,14 +413,28 @@ if (isset($_POST) && !empty($_POST)){
 	}
 
 	if($validated){
-		var_dump($users_query);
-		var_dump($networks_queries);
-		var_dump($experience_queries);
-		var_dump($per_queries);
-		var_dump($pro_queries);
-		var_dump($education_queries);
-		var_dump($hobbies_queries);
-		var_dump($languages_queries);
+		$mysqli->query($users_query);
+		foreach ($networks_queries as $key => $value) {
+			$mysqli->query($value);
+		}
+		foreach ($experience_queries as $key => $value) {
+			$mysqli->query($value);
+		}
+		foreach ($per_queries as $key => $value) {
+			$mysqli->query($value);
+		}
+		foreach ($pro_queries as $key => $value) {
+			$mysqli->query($value);
+		}
+		foreach ($education_queries as $key => $value) {
+			$mysqli->query($value);
+		}
+		foreach ($hobbies_queries as $key => $value) {
+			$mysqli->query($value);
+		}
+		foreach ($languages_queries as $key => $value) {
+			$mysqli->query($value);
+		}
 	}
 	else{
 		var_dump($errs);
