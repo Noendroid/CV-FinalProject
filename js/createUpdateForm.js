@@ -1,5 +1,5 @@
 $(function(){
-
+/*
     $("form").submit(function(e) {
         $.ajax({ //Send a request to the server with the form content
                type: "POST",
@@ -14,7 +14,8 @@ $(function(){
                }
         });
         e.preventDefault(); // avoid to execute the actual submit of the form.
-    });
+
+    });*/
 
     //get the social networks
     $.get('http://localhost/CV-FinalProject/php/getSocialNetworks.php', function(data) {

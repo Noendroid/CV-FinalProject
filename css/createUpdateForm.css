@@ -113,3 +113,14 @@ input
     margin-left: 25%;
     margin-bottom: 10%;
 }
+#responseDiv div{
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-bottom: 3%;
+    font-style: italic;
+    color: #FF5252;
+    border-style: dashed;
+    border-width: 1px;
+}
