@@ -2,19 +2,11 @@
 include_once 'db_connector.php';
 
     $dataB = [
-        "basicInfo" => [
-            "id" => "",
-            "firstName" => "",
-            "lastName" => "",
-            "phone" => "",
-            "email" => "",
-            "area" => "",
-            "about_me" => "",
-            "degree" => ""
+        "error"
         ]
     ];
-
-    $sql = "SELECT * FROM users WHERE id = '" . $_GET["user_id"] . "'";
+    $user_id = $_GET["user_id"];
+    $sql = "SELECT * FROM user_hobbies WHERE user_id = '" . $user_id . "'";
     //echo var_dump($sql);
     $result = $mysqli->query($sql);
 

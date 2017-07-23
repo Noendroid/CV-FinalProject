@@ -1,17 +1,5 @@
 $(function(){
-/*
-    var users = {
-        user: {
-            `id`: 0,
-            `first_name`: 'igal',
-            `last_name`: 'Kolihman',
-            `phone`: '054-683-0597',
-            `email`: 'igalhamer@gmail.com',
-            `area`: 'lod',
-            `about_me`: 'good stafff',
-            `degree`: 'Doctorim'
-        }
-    };*/
+    
     console.log("sending request");
     var user_id = window.location.hash.substr(1); //Get the section after hash tag from URL, e.g. index.html#Arik return 'Arik'
     console.log("user-> ", user_id);
