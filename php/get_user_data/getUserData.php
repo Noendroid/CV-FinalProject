@@ -3,7 +3,6 @@ include_once 'db_connector.php';
 
     $dataB = [
         "error"
-        ]
     ];
     $user_id = $_GET["user_id"];
     $sql = "SELECT * FROM users WHERE id = '" . $user_id . "'";
@@ -15,7 +14,7 @@ include_once 'db_connector.php';
         header('Content-Type: application/json');
         $data = $result->fetch_assoc();
         echo json_encode($data);
-    } else{4
+    } else{
         echo json_encode($dataB);
     }
 ?>

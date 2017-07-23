@@ -343,14 +343,14 @@ if (isset($_POST) && !empty($_POST)){
 			        values ("%s","%s","%s","%s","%s","%s");', $values_edu);// insert to user_education table
 				}
 				else {
-					$errs[] = "You didnt tell us about your education" . sizeof($education_values);
+					$errs[] = "Something is wrong with the education section" . sizeof($education_values);
 					$validated = false;
 					$edu_empty = true;
 					break;
 				}
 			}
 			else {
-				$errs[] = "You didnt tell us about your education";
+				$errs[] = "Something is wrong with the education section";
 				$validated = false;
 				$edu_empty = true;
 				break;
