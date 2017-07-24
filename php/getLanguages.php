@@ -7,7 +7,7 @@
         ]
     ];
 
-    $sql = "SELECT name FROM languages;";
+    $sql = "SELECT * FROM languages;";
     //echo var_dump($sql);
     $result = $mysqli->query($sql);
 

@@ -207,7 +207,7 @@ h2 {
 #hobbies ul li{
     display: grid;
     padding: 3%;
-    align-content: center;
+    align-items: stretch;
 }
 #hobbies ul li i{
     font-size: 250%;

@@ -125,26 +125,6 @@ $(function(){
             }
             $("#education").html(html);
         });
-
-        /*
-        <h2 class="secondary_tytle">pro skills</h2>
-        <article>
-            <ul>
-                <li>photoshop</li>
-                <li>illustraor</li>
-                <li>javascript</li>
-                <li>HTML/CSS</li>
-            </ul>
-
-            <ul>
-                <li><progress id="HTML/CSS" max=100 value=70></progress></li>
-                <li><progress id="illustraor" max=100 value=80></progress></li>
-                <li><progress id="javascript" max=100 value=90></progress></li>
-                <li><progress id="HTML/CSS" max=100 value=80></progress></li>
-            </ul>
-        </article>
-
-        */
         $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserProSkills.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
             console.log('pro skills:', data); //We just print whatever we got from the server
@@ -242,6 +222,59 @@ $(function(){
             for (var i = 0; i < msg.length; i++) {
                 if(msg[i].id == id){
                     return msg[i].icon_name;
+                }
+            }
+            return null;
+        }
+
+        /*
+        <h2 class="secondary_tytle">languages</h2>
+        <section>
+            <ul>
+                <li>English</li>
+                <li>Spanish</li>
+                <li>French</li>
+            </ul>
+
+            <ul>
+                <li><progress id="English" max=100 value=70></progress></li>
+                <li><progress id="Spanish" max=100 value=75></progress></li>
+                <li><progress id="French" max=100 value=80></progress></li>
+            </ul>
+        </section>
+        */
+        $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserLanguages.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
+
+            console.log('languages:', data); //We just print whatever we got from the server
+
+            var html = "<h2 class='secondary_tytle'>Languages</h2>";
+            html += "<section>";
+            html += "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li>";
+                html += getLanguageName(data[i].language_id);
+            }
+            html += "</ul>";
+            html += "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li>";
+                html += "<progress max=100 value=" + data[i].value + "></progress>";
+            }
+            html += "</ul>";
+            html += "</section>";
+            $("#languages").html(html);
+        });
+
+        function getLanguageName(id){
+            var msg = $.ajax({
+                type: "GET",
+                url: "http://localhost/CV-FinalProject/php/getLanguages.php",
+                async: false
+            }).responseText;
+            msg = JSON.parse(msg);
+            for (var i = 0; i < msg.length; i++) {
+                if(msg[i].id == id){
+                    return msg[i].name;
                 }
             }
             return null;
