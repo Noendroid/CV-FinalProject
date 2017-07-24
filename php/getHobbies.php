@@ -7,7 +7,7 @@
         ]
     ];
 
-    $sql = "SELECT name FROM hobbies;";
+    $sql = "SELECT * FROM hobbies;";
     //echo var_dump($sql);
     $result = $mysqli->query($sql);
 

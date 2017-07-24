@@ -108,10 +108,12 @@ h2 {
     padding-right: 4%;
 }
 .description section {
-    display: flex;
+    width: 100%;
+    display: inline-flex;
 }
 .description section aside{
-    width: 40%;
+    text-align: right;
+    width: 20%;
     margin-right: 4%;
 }
 .description section aside h5{
@@ -125,6 +127,7 @@ h2 {
     font-family: monospace;
 }
 .description section aside span{
+    text-align: right;
     margin-right: 0%;
     margin-top: 0%;
     font-size: 65%;
@@ -132,6 +135,7 @@ h2 {
     font-weight: 800;
 }
 .description section article{
+    width: 80%;
     margin-top: 1%;
     font-family: cursive;
 }
