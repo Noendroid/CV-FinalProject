@@ -3,7 +3,7 @@ include_once 'db_connector.php';
 
     $dataB = [
         "error"
-        ]
+        
     ];
     $user_id = $_GET["user_id"];
     $sql = "SELECT * FROM user_pro_skills WHERE user_id = '" . $user_id . "'";

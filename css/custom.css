@@ -111,10 +111,12 @@ h2 {
     display: flex;
 }
 .description section aside{
+    width: 40%;
     margin-right: 4%;
 }
 .description section aside h5{
     font-size: 150%;
+    text-transform: uppercase;
     width: 100%;
     text-align: right;
     margin-bottom: 0%;
@@ -135,6 +137,7 @@ h2 {
 }
 .description section article h4{
     margin-bottom: 0%;
+    text-transform: capitalize;
     color: #212121;
 }
 .description section article p{

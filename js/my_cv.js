@@ -68,30 +68,51 @@ $(function(){
         }
         return null;
     }
-
     /*
-          //Social networks
-          $ul = $('<ul>', {
-              'id': 'social-networks'
-          });
+    <h2 class='secondary_tytle'>experience</h2>
+    <section>
+        <aside>
+            <h5>SENIOR WEB DEVELOPER</h5>
+            <span>Jan 2017 - Dec 2015</span>
+        </aside>
+        <article>
+            <h4>Works In Lorem Ipsum - United States</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at felis libero. Proin pretium mauris id dignissim consequat. Sed ante mi, aliquam et sollicitudin in, molestie eget neque. Nulla facilisi. Duis id nisi eu ante eleifend dictum u
+            </p>
+        </article>
+    </section>
+    */
+    $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserExperience.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
-          for(i in data.socialNetworks) { //We also got the social networks from the server, which is acceable from data.socialNetworks.
-              var $templi = $('<li>');
+        console.log('experience:', data); //We just print whatever we got from the server
+        var monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+            ];
 
-              $templi.append('<i class="fa fa-'+data.socialNetworks[i].iconName+'"></i>');
-              $templi.append('<a href="'+data.socialNetworks[i].link+'">'+data.socialNetworks[i].name+'</a>');
-
-              $templi.click(function(){
-                  alert($(this).children('a').text() + ' clicked!');
-              });
-
-              //Add the new li element to the ul
-              $ul.append($templi);
-          }
-
-          $ul.insertAfter('#intro');
-*/
-
+        var html = "<h2 class='secondary_tytle'>experience</h2>";
+        for (var i = 0; i < data.length; i++) {
+            html += "<section>";
+            html += "<aside>";
+            html += "<h5>" + data[i].title + "</h5>";
+            var start_date = new Date(data[i].start_date);
+            var end_date = new Date(data[i].end_date);
+            html += "<span>";
+            html += monthNames[start_date.getMonth()] + " " + start_date.getFullYear();
+            html += " to " + monthNames[end_date.getMonth()] + " " + end_date.getFullYear();
+            html += "</span>";
+            html += "</aside>";
+            html += "<article>";
+            html += "<h4>" + data[i].company + "</h4>";
+            html += "<p>";
+            html += data[i].description;
+            html += "</p>";
+            html += "</article>";
+            html += "</section>";
+        }
+        $("#experience").html(html);
+    });
     }
 
 });

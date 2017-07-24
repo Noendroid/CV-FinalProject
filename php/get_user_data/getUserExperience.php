@@ -3,7 +3,6 @@ include_once 'db_connector.php';
 
     $dataB = [
         "error"
-        ]
     ];
     $user_id = $_GET["user_id"];
     $sql = "SELECT * FROM user_experience WHERE user_id = '" . $user_id . "'";
