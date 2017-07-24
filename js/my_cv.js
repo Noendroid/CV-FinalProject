@@ -20,12 +20,7 @@ $(function(){
 
 
         });
-        /*
-        <li>
-            <i class="fa fa-facebook-official" aria-hidden="true"></i>
-            <a href="#">Facebook</a>
-        </li>
-        */
+
         $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserSocialNetworks.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
             console.log('social-networks:', data); //We just print whatever we got from the server
@@ -68,21 +63,7 @@ $(function(){
             }
             return null;
         }
-        /*
-        <h2 class='secondary_tytle'>experience</h2>
-        <section>
-            <aside>
-                <h5>SENIOR WEB DEVELOPER</h5>
-                <span>Jan 2017 - Dec 2015</span>
-            </aside>
-            <article>
-                <h4>Works In Lorem Ipsum - United States</h4>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at felis libero. Proin pretium mauris id dignissim consequat. Sed ante mi, aliquam et sollicitudin in, molestie eget neque. Nulla facilisi. Duis id nisi eu ante eleifend dictum u
-                </p>
-            </article>
-        </section>
-        */
+
         $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserExperience.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
             console.log('experience:', data); //We just print whatever we got from the server
@@ -113,22 +94,7 @@ $(function(){
             }
             $("#experience").html(html);
         });
-    /*
-    <h2 class="secondary_tytle">education</h2>
-    <section>
-            <aside>
-                <h5>SENIOR WEB DEVELOPER</h5>
-                <span>Jan 2017 - Dec 2015</span>
-            </aside>
-            <article>
-                <h4>Works In Lorem Ipsum - United States</h4>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at felis libero. Proin pretium mauris id dignissim consequat. Sed ante mi, aliquam et sollicitudin in, molestie eget neque. Nulla facilisi. Duis id nisi eu ante eleifend dictum u
-                </p>
-            </article>
-        </section>
-    <section>
-    */
+
         $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserEducation.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
             console.log('education:', data); //We just print whatever we got from the server
@@ -159,14 +125,98 @@ $(function(){
             }
             $("#education").html(html);
         });
-    /*
-    <ul>
-        <li>
-            <i class="fa fa-camera"></i>
-            <a href='#'>Photography</a>
-        </li>
-    </ul>
-    */
+
+        /*
+        <h2 class="secondary_tytle">pro skills</h2>
+        <article>
+            <ul>
+                <li>photoshop</li>
+                <li>illustraor</li>
+                <li>javascript</li>
+                <li>HTML/CSS</li>
+            </ul>
+
+            <ul>
+                <li><progress id="HTML/CSS" max=100 value=70></progress></li>
+                <li><progress id="illustraor" max=100 value=80></progress></li>
+                <li><progress id="javascript" max=100 value=90></progress></li>
+                <li><progress id="HTML/CSS" max=100 value=80></progress></li>
+            </ul>
+        </article>
+
+        */
+        $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserProSkills.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
+
+            console.log('pro skills:', data); //We just print whatever we got from the server
+
+            var html = "<h2 class='secondary_tytle'>Pro Skills</h2>";
+            html += "<article>";
+            html += "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li>";
+                html += getProSkillName(data[i].skill_id);
+            }
+            html += "</ul>";
+            html += "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li>";
+                html += "<progress max=100 value=" + data[i].value + "></progress>";
+            }
+            html += "</ul>";
+            html += "</article>";
+            $("#pro_skills").html(html);
+        });
+
+        function getProSkillName(id){
+            var msg = $.ajax({
+                type: "GET",
+                url: "http://localhost/CV-FinalProject/php/getProSkills.php",
+                async: false
+            }).responseText;
+            msg = JSON.parse(msg);
+            for (var i = 0; i < msg.length; i++) {
+                if(msg[i].id == id){
+                    return msg[i].name;
+                }
+            }
+            return null;
+        }
+        $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserPerSkills.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
+
+            console.log('pro skills:', data); //We just print whatever we got from the server
+
+            var html = "<h2 class='secondary_tytle'>Per Skills</h2>";
+            html += "<article>";
+            html += "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li>";
+                html += getPerSkillName(data[i].skill_id);
+            }
+            html += "</ul>";
+            html += "<ul>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<li>";
+                html += "<progress max=100 value=" + data[i].value + "></progress>";
+            }
+            html += "</ul>";
+            html += "</article>";
+            $("#per_skills").html(html);
+        });
+
+        function getPerSkillName(id){
+            var msg = $.ajax({
+                type: "GET",
+                url: "http://localhost/CV-FinalProject/php/getPerSkills.php",
+                async: false
+            }).responseText;
+            msg = JSON.parse(msg);
+            for (var i = 0; i < msg.length; i++) {
+                if(msg[i].id == id){
+                    return msg[i].name;
+                }
+            }
+            return null;
+        }
         $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserHobbies.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
             console.log('hobbies:', data); //We just print whatever we got from the server
@@ -177,7 +227,6 @@ $(function(){
                 html += "<li>";
                 html += "<i class='" + getHobbieClass(data[i].hobby_id) + "'></i>";
                 html += "<a href='#'>" + data[i].value + "</a>";
-                html += "<li>";
             }
             html += "</ul>";
             $("#hobbies").html(html);

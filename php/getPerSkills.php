@@ -8,7 +8,7 @@
         ]
     ];
 
-    $sql = "SELECT name FROM per_skills;";
+    $sql = "SELECT * FROM per_skills;";
     //echo var_dump($sql);
     $result = $mysqli->query($sql);
 
