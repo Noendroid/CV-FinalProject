@@ -64,6 +64,9 @@ PART 7
 	'Italian' => string '' (length=0)
 */
 if (isset($_POST) && !empty($_POST)){
+	foreach ($_POST as $key => $input_arr) {
+		$_POST[$key] = addslashes($input_arr);
+	}
 	$validated = true;
 	$get_user_id_sql = "SELECT MAX(id) FROM users;";
 	$result = $mysqli->query($get_user_id_sql);
@@ -106,13 +109,13 @@ if (isset($_POST) && !empty($_POST)){
 	}
 	if($validated){
 		$user_values = array(
-            $_POST['first_name'],
-			$_POST['last_name'],
-			$_POST['phone'],
-			$_POST['email'],
-			$_POST['address'],
-			$_POST['about_me'],
-			$_POST['degree']
+            mysqli_real_escape_string($mysqli, $_POST['first_name']),
+			mysqli_real_escape_string($mysqli, $_POST['last_name']),
+			mysqli_real_escape_string($mysqli, $_POST['phone']),
+			mysqli_real_escape_string($mysqli, $_POST['email']),
+			mysqli_real_escape_string($mysqli, $_POST['address']),
+			mysqli_real_escape_string($mysqli, $_POST['about_me']),
+			mysqli_real_escape_string($mysqli, $_POST['degree'])
 		);
 		$users_query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
         values ("%s","%s","%s","%s","%s","%s","%s");', $user_values);// insert to users table
@@ -172,12 +175,12 @@ if (isset($_POST) && !empty($_POST)){
 					if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 5
 						// it means that all the fields were full
 						$values_exp = array(
-				            $user_id,
-							$experience_values[0],
-							$experience_values[3],
-							$experience_values[1],
-							$experience_values[2],
-							$experience_values[4]
+				            mysqli_real_escape_string($mysqli, $user_id),
+							mysqli_real_escape_string($mysqli, $experience_values[0]),
+							mysqli_real_escape_string($mysqli, $experience_values[3]),
+							mysqli_real_escape_string($mysqli, $experience_values[1]),
+							mysqli_real_escape_string($mysqli, $experience_values[2]),
+							mysqli_real_escape_string($mysqli, $experience_values[4])
 						);
 						$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
 				        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
@@ -239,9 +242,9 @@ if (isset($_POST) && !empty($_POST)){
 				}
 				else if($value != 0){
 					$per_values = array(
-						$per_skills[$counter]['id'],
-						$user_id,
-						$value
+						mysqli_real_escape_string($mysqli, $per_skills[$counter]['id']),
+						mysqli_real_escape_string($mysqli, $user_id),
+						mysqli_real_escape_string($mysqli, $value)
 					);
 					$per_queries[] = vsprintf('insert into user_per_skills (skill_id,user_id,value)
 					values ("%s","%s","%s");', $per_values);// insert to user_per_skills table
@@ -271,9 +274,9 @@ if (isset($_POST) && !empty($_POST)){
 				}
 				else if($value != 0){
 					$pro_values = array(
-						$pro_skills[$counter]['id'],
-						$user_id,
-						$value
+						mysqli_real_escape_string($mysqli, $pro_skills[$counter]['id']),
+						mysqli_real_escape_string($mysqli, $user_id),
+						mysqli_real_escape_string($mysqli, $value)
 					);
 					$pro_queries[] = vsprintf('insert into user_pro_skills (skill_id,user_id,value)
 					values ("%s","%s","%s");', $pro_values);// insert to user_pro_skills table
@@ -333,11 +336,11 @@ if (isset($_POST) && !empty($_POST)){
 					// it means that all the fields were full
 					$values_edu = array(
 			            $user_id,
-						$education_values[0],//title
-						$education_values[3],//location
-						$education_values[1],//start
-						$education_values[2],//end
-						$education_values[4]//description
+						mysqli_real_escape_string($mysqli, $education_values[0]),//title
+						mysqli_real_escape_string($mysqli, $education_values[3]),//location
+						mysqli_real_escape_string($mysqli, $education_values[1]),//start
+						mysqli_real_escape_string($mysqli, $education_values[2]),//end
+						mysqli_real_escape_string($mysqli, $education_values[4])//description
 					);
 					$education_queries[] = vsprintf('insert into user_education (user_id,title,location,start_date,end_date,description)
 			        values ("%s","%s","%s","%s","%s","%s");', $values_edu);// insert to user_education table
@@ -367,9 +370,9 @@ if (isset($_POST) && !empty($_POST)){
 			$result = $mysqli->query($hobby_sql);
 			$hobby_id = $result->fetch_assoc()['id'];
 			$hobbies_values = array(
-				$hobby_id,
-				$user_id,
-				$value
+				mysqli_real_escape_string($mysqli, $hobby_id),
+				mysqli_real_escape_string($mysqli, $user_id),
+				mysqli_real_escape_string($mysqli, $value)
 			);
 			$hobbies_queries[] = vsprintf('insert into user_hobbies (hobby_id,user_id,value)
 			values ("%s","%s","%s");', $hobbies_values);// insert to user_hobbies table
@@ -390,9 +393,9 @@ if (isset($_POST) && !empty($_POST)){
 					$result = $mysqli->query($languages_sql);
 					$language_id = $result->fetch_assoc()['id'];
 					$languages_values = array(
-						$language_id,
-						$user_id,
-						$value
+						mysqli_real_escape_string($mysqli, $language_id),
+						mysqli_real_escape_string($mysqli, $user_id),
+						mysqli_real_escape_string($mysqli, $value)
 					);
 					$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
 					values ("%s","%s","%s");', $languages_values);// insert to user_languages table
@@ -421,28 +424,78 @@ if (isset($_POST) && !empty($_POST)){
 		}
 	}
 
+	$query_error = false;
 	if($validated){
 		$mysqli->query($users_query);
 		foreach ($networks_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = $mysqli->query($value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing social networks query(<br>query:<br><br>" . $value . "<br><br>)";
+					break;
+				}
+			}
 		}
 		foreach ($experience_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = mysqli_query($mysqli, $value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing experience query:<br>Key: ". $key . "<br>size: ". strlen($value) . "<br>query:<br><br>" . $value . "<br><br>";
+					break;
+				}
+			}
 		}
 		foreach ($per_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = $mysqli->query($value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing per skill query(<br>query:<br><br>" . $value . "<br><br>)";
+					break;
+				}
+			}
 		}
 		foreach ($pro_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = $mysqli->query($value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing pro skill query(<br>query:<br><br>" . $value . "<br><br>)";
+					break;
+				}
+			}
 		}
 		foreach ($education_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = $mysqli->query($value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing education query(<br>query:<br><br>" . $value . "<br><br>)";
+					break;
+				}
+			}
 		}
 		foreach ($hobbies_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = $mysqli->query($value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing hobbies query(<br>query:<br><br>" . $value . "<br><br>)";
+					break;
+				}
+			}
 		}
 		foreach ($languages_queries as $key => $value) {
-			$mysqli->query($value);
+			if($query_error == false){
+				$result = $mysqli->query($value);
+				if($result == false){
+					$query_error = true;
+					$errs[] = "error executing languages query(<br>query:<br><br>" . $value . "<br><br>)";
+					break;
+				}
+			}
 		}
 	}
 	else{
@@ -452,4 +505,30 @@ if (isset($_POST) && !empty($_POST)){
 		}
 		echo "</div><br>";
 	}
+	if($query_error){
+		$sql_users = "DELETE FROM users WHERE id = '" . $user_id . "';";
+	    $sql_user_social_networks = "DELETE FROM user_social_networks WHERE user_id = '" . $user_id . "';";
+	    $sql_user_pro_skills = "DELETE FROM user_pro_skills WHERE user_id = '" . $user_id . "';";
+	    $sql_user_per_skills = "DELETE FROM user_per_skills WHERE user_id = '" . $user_id . "';";
+	    $sql_user_languages = "DELETE FROM user_languages WHERE user_id = '" . $user_id . "';";
+	    $sql_user_hobbies = "DELETE FROM user_hobbies WHERE user_id = '" . $user_id . "';";
+	    $sql_user_experience = "DELETE FROM user_experience WHERE user_id = '" . $user_id . "';";
+	    $sql_user_education = "DELETE FROM user_education WHERE user_id = '" . $user_id . "';";
+
+	    $result = $mysqli->query($sql_users);
+	    $result = $mysqli->query($sql_user_social_networks);
+	    $result = $mysqli->query($sql_user_pro_skills);
+	    $result = $mysqli->query($sql_user_per_skills);
+	    $result = $mysqli->query($sql_user_languages);
+	    $result = $mysqli->query($sql_user_hobbies);
+	    $result = $mysqli->query($sql_user_experience);
+	    $result = $mysqli->query($sql_user_education);
+
+		echo "<div>";
+		foreach ($errs as $value) {
+			echo " *  " . $value . "<br>";
+		}
+		echo "</div><br>";
+	}
+	$mysqli->close();
 ?>

@@ -154,7 +154,7 @@ h2 {
 }
 #skills {
     width: 33.3%;
-    height: 110%;
+    height: auto;
 }
 .skills {
     width: 100%;

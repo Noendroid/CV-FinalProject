@@ -1,38 +1,4 @@
 
-insert into social_networks (name, icon_name) values("facebook", "fa fa-facebook");
-insert into social_networks (name, icon_name) values("linkedin", "fa fa-linkedin");
-insert into social_networks (name, icon_name) values("instagram", "fa fa-instagram");
-insert into social_networks (name, icon_name) values("medium", "fa fa-medium");
-insert into social_networks (name, icon_name) values("website", "fa fa-globe");
-insert into social_networks (name, icon_name) values("google_plus", "fa fa-google-plus");
-insert into social_networks (name, icon_name) values("twitter", "fa fa-twitter");
-
-insert into per_skills (name) values("Creativity");
-insert into per_skills (name) values("Hard Work");
-insert into per_skills (name) values("Team Work");
-insert into per_skills (name) values("Leader Ship");
-
-
-insert into pro_skills (name) values("Photoshop");
-insert into pro_skills (name) values("Illustrator");
-insert into pro_skills (name) values("JavaScript");
-insert into pro_skills (name) values("HTML/CSS");
-
-insert into hobbies (name, icon_name) values("sport", "fa fa-futbol-o");
-insert into hobbies (name, icon_name) values("reading", "fa fa-book");
-insert into hobbies (name, icon_name) values("programming", "fa fa-terminal");
-insert into hobbies (name, icon_name) values("sleeping", "fa fa-bed");
-insert into hobbies (name, icon_name) values("socializing", "fa fa-share-alt");
-insert into hobbies (name, icon_name) values("video_games", "fa fa-gamepad");
-
-insert into languages (name) values("English");
-insert into languages (name) values("French");
-insert into languages (name) values("Hebrew");
-insert into languages (name) values("Russian");
-insert into languages (name) values("Arabic");
-insert into languages (name) values("Italian");
-
-
 SELECT * FROM hobbies;
 SELECT * FROM languages;
 SELECT * FROM per_skills;
@@ -46,6 +12,20 @@ SELECT * FROM user_per_skills;
 SELECT * FROM user_pro_skills;
 SELECT * FROM user_social_networks;
 SELECT * FROM users;
+
+DELETE FROM hobbies;
+DELETE FROM languages;
+DELETE FROM per_skills;
+DELETE FROM pro_skills;
+DELETE FROM social_networks;
+DELETE FROM user_education;
+DELETE FROM user_experience;
+DELETE FROM user_hobbies;
+DELETE FROM user_languages;
+DELETE FROM user_per_skills;
+DELETE FROM user_pro_skills;
+DELETE FROM user_social_networks;
+DELETE FROM users;
 
 
 DROP TABLE hobbies;
@@ -69,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `about_me` text NOT NULL,
+  `about_me` varchar(60000) NOT NULL,
   `degree` varchar(255) NOT NULL,
   `created` timestamp NOT NULL default current_timestamp() ,
   PRIMARY KEY (`id`)
@@ -82,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `user_experience` (
   `company` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(60000) NOT NULL,
   `created` timestamp NOT NULL default current_timestamp() ,
   PRIMARY KEY (`experience_id` )
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
@@ -120,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `user_education` (
   `location` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(60000) NOT NULL,
   `created` timestamp NOT NULL default current_timestamp() ,
   PRIMARY KEY (`education_id` )
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
@@ -165,3 +145,37 @@ CREATE TABLE IF NOT EXISTS `social_networks` (
   `icon_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+
+insert into social_networks (name, icon_name) values("facebook", "fa fa-facebook");
+insert into social_networks (name, icon_name) values("linkedin", "fa fa-linkedin");
+insert into social_networks (name, icon_name) values("instagram", "fa fa-instagram");
+insert into social_networks (name, icon_name) values("medium", "fa fa-medium");
+insert into social_networks (name, icon_name) values("website", "fa fa-globe");
+insert into social_networks (name, icon_name) values("google_plus", "fa fa-google-plus");
+insert into social_networks (name, icon_name) values("twitter", "fa fa-twitter");
+
+insert into per_skills (name) values("Creativity");
+insert into per_skills (name) values("Hard Work");
+insert into per_skills (name) values("Team Work");
+insert into per_skills (name) values("Leader Ship");
+
+
+insert into pro_skills (name) values("Photoshop");
+insert into pro_skills (name) values("Illustrator");
+insert into pro_skills (name) values("JavaScript");
+insert into pro_skills (name) values("HTML/CSS");
+
+insert into hobbies (name, icon_name) values("sport", "fa fa-futbol-o");
+insert into hobbies (name, icon_name) values("reading", "fa fa-book");
+insert into hobbies (name, icon_name) values("programming", "fa fa-terminal");
+insert into hobbies (name, icon_name) values("sleeping", "fa fa-bed");
+insert into hobbies (name, icon_name) values("socializing", "fa fa-share-alt");
+insert into hobbies (name, icon_name) values("video_games", "fa fa-gamepad");
+
+insert into languages (name) values("English");
+insert into languages (name) values("French");
+insert into languages (name) values("Hebrew");
+insert into languages (name) values("Russian");
+insert into languages (name) values("Arabic");
+insert into languages (name) values("Italian");
