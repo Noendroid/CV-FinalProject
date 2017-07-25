@@ -159,12 +159,20 @@ insert into per_skills (name) values("Creativity");
 insert into per_skills (name) values("Hard Work");
 insert into per_skills (name) values("Team Work");
 insert into per_skills (name) values("Leader Ship");
+insert into per_skills (name) values("Home Working");
+insert into per_skills (name) values("Charisma");
+insert into per_skills (name) values("Algorithms");
 
 
 insert into pro_skills (name) values("Photoshop");
 insert into pro_skills (name) values("Illustrator");
 insert into pro_skills (name) values("JavaScript");
 insert into pro_skills (name) values("HTML/CSS");
+insert into pro_skills (name) values("Math");
+insert into pro_skills (name) values("Psychology");
+insert into pro_skills (name) values("Physics");
+insert into pro_skills (name) values("Java");
+insert into pro_skills (name) values("Android");
 
 insert into hobbies (name, icon_name) values("sport", "fa fa-futbol-o");
 insert into hobbies (name, icon_name) values("reading", "fa fa-book");

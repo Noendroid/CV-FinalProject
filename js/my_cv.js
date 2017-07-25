@@ -131,19 +131,18 @@ $(function(){
 
             var html = "<h2 class='secondary_tytle'>Pro Skills</h2>";
             html += "<article>";
-            html += "<ul>";
+            html += "<table class='table_list'>";
             for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "<tr>";
+                html += "<td>";
                 html += getProSkillName(data[i].skill_id);
-            }
-            html += "</ul>";
-            html += "<ul>";
-            for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "</td>";
+                html += "<td>";
                 html += "<progress max=100 value=" + data[i].value + "></progress>";
+                html += "</td>";
+                html += "</tr>";
             }
-            html += "</ul>";
-            html += "</article>";
+            html += "</table>";
             $("#pro_skills").html(html);
         });
 
@@ -167,19 +166,18 @@ $(function(){
 
             var html = "<h2 class='secondary_tytle'>Per Skills</h2>";
             html += "<article>";
-            html += "<ul>";
+            html += "<table class='table_list'>";
             for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "<tr>";
+                html += "<td>";
                 html += getPerSkillName(data[i].skill_id);
-            }
-            html += "</ul>";
-            html += "<ul>";
-            for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "</td>";
+                html += "<td>";
                 html += "<progress max=100 value=" + data[i].value + "></progress>";
+                html += "</td>";
+                html += "</tr>";
             }
-            html += "</ul>";
-            html += "</article>";
+            html += "</table>";
             $("#per_skills").html(html);
         });
 
@@ -202,13 +200,19 @@ $(function(){
             console.log('hobbies:', data); //We just print whatever we got from the server
 
             var html = "<h2 class='secondary_tytle'>Hobbies</h2>";
-            html += "<ul>";
+            html += "<table class='table_list'>";
+            html += "<tr>";
             for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "<td>";
+                html += "<section>";
                 html += "<i class='" + getHobbieClass(data[i].hobby_id) + "'></i>";
+                html += "<br>";
                 html += "<a href='#'>" + data[i].value + "</a>";
+                html += "</section>";
+                html += "</td>";
             }
-            html += "</ul>";
+            html += "</tr>";
+            html += "</table>";
             $("#hobbies").html(html);
         });
 
@@ -226,42 +230,24 @@ $(function(){
             }
             return null;
         }
-
-        /*
-        <h2 class="secondary_tytle">languages</h2>
-        <section>
-            <ul>
-                <li>English</li>
-                <li>Spanish</li>
-                <li>French</li>
-            </ul>
-
-            <ul>
-                <li><progress id="English" max=100 value=70></progress></li>
-                <li><progress id="Spanish" max=100 value=75></progress></li>
-                <li><progress id="French" max=100 value=80></progress></li>
-            </ul>
-        </section>
-        */
         $.get('http://localhost/CV-FinalProject/php/get_user_data/getUserLanguages.php?user_id=' + user_id, function(data) { //This code makes an HTTP request to /arik and puts the data in the 'data' variable
 
             console.log('languages:', data); //We just print whatever we got from the server
 
             var html = "<h2 class='secondary_tytle'>Languages</h2>";
             html += "<section>";
-            html += "<ul>";
+            html += "<table class='table_list'>";
             for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "<tr>";
+                html += "<td>";
                 html += getLanguageName(data[i].language_id);
-            }
-            html += "</ul>";
-            html += "<ul>";
-            for (var i = 0; i < data.length; i++) {
-                html += "<li>";
+                html += "</td>";
+                html += "<td>";
                 html += "<progress max=100 value=" + data[i].value + "></progress>";
+                html += "</td>";
+                html += "</tr>";
             }
-            html += "</ul>";
-            html += "</section>";
+            html += "</table>";
             $("#languages").html(html);
         });
 
