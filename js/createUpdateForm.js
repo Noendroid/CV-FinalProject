@@ -221,4 +221,15 @@ $(function(){
         $('#languages').append(html);
     });
 
+    if(user_id > 0){
+        user_data = get_user_data(user_id);
+        console.log(user_data);
+        document.getElementsByName("first_name")[0].value = user_data.first_name;
+        document.getElementsByName("last_name")[0].value = user_data.last_name;
+        document.getElementsByName("degree")[0].value = user_data.degree;
+        document.getElementsByName("phone")[0].value = user_data.phone;
+        document.getElementsByName("address")[0].value = user_data.address;
+        document.getElementsByName("email")[0].value = user_data.email;
+        document.getElementsByName("about_me")[0].value = user_data.about_me;
+    }
 });
