@@ -148,6 +148,12 @@ $(function(){
         html += '</section>';// closing the table tytles
 
         $('#social_networks').append(html);
+        user_networks = get_user_networks(user_id);
+        console.log(user_networks);
+        for (var i = 0; i < user_networks.length; i++) {
+            console.log(user_networks[i].network_id);
+            document.getElementsByName(getNetworkName(user_networks[i].network_id))[0].value = user_networks[i].value;
+        }
     });
     //get the pro skills
     $.get('http://localhost/CV-FinalProject/php/getProSkills.php', function(data) {
@@ -222,14 +228,17 @@ $(function(){
     });
 
     if(user_id > 0){
-        user_data = get_user_data(user_id);
-        console.log(user_data);
-        document.getElementsByName("first_name")[0].value = user_data.first_name;
-        document.getElementsByName("last_name")[0].value = user_data.last_name;
-        document.getElementsByName("degree")[0].value = user_data.degree;
-        document.getElementsByName("phone")[0].value = user_data.phone;
-        document.getElementsByName("address")[0].value = user_data.address;
-        document.getElementsByName("email")[0].value = user_data.email;
-        document.getElementsByName("about_me")[0].value = user_data.about_me;
+        //  user data
+        data = get_user_data(user_id);
+        console.log(data);
+        document.getElementsByName("first_name")[0].value = data.first_name;
+        document.getElementsByName("last_name")[0].value = data.last_name;
+        document.getElementsByName("degree")[0].value = data.degree;
+        document.getElementsByName("phone")[0].value = data.phone;
+        document.getElementsByName("address")[0].value = data.address;
+        document.getElementsByName("email")[0].value = data.email;
+        document.getElementsByName("about_me")[0].value = data.about_me;
+
+
     }
 });
