@@ -148,11 +148,12 @@ $(function(){
         html += '</section>';// closing the table tytles
 
         $('#social_networks').append(html);
-        user_networks = get_user_networks(user_id);
-        console.log(user_networks);
-        for (var i = 0; i < user_networks.length; i++) {
-            console.log(user_networks[i].network_id);
-            document.getElementsByName(getNetworkName(user_networks[i].network_id))[0].value = user_networks[i].value;
+        if(user_id > 0){
+            data = get_user_networks(user_id);
+            console.log("user_networks: ",data);
+            for (var i = 0; i < data.length; i++) {
+                document.getElementsByName(getNetworkName(data[i].network_id))[0].value = data[i].value;
+            }
         }
     });
     //get the pro skills
@@ -170,6 +171,13 @@ $(function(){
         html += '</ul>';// closing the table tytles
         html += "</section>";
         $('#skills').append(html);
+        if(user_id > 0){
+            data = get_user_pro(user_id);
+            console.log("user_pro_skills: ",data);
+            for (var i = 0; i < data.length; i++) {
+                document.getElementsByName(getProSkillName(data[i].skill_id))[0].value = data[i].value;
+            }
+        }
     });
 
     //get the per skills
@@ -187,6 +195,13 @@ $(function(){
         html += '</ul>';// closing the table tytles
         html += "</section>";
         $('#skills').append(html);
+        if(user_id > 0){
+            data = get_user_per(user_id);
+            console.log("user_per_skills: ",data);
+            for (var i = 0; i < data.length; i++) {
+                document.getElementsByName(getPerSkillName(data[i].skill_id))[0].value = data[i].value;
+            }
+        }
     });
 
     //get the hobbies
