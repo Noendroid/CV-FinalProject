@@ -1,22 +1,135 @@
 $(function(){
-/*
-    $("form").submit(function(e) {
-        $.ajax({ //Send a request to the server with the form content
-               type: "POST",
-               url: "http://localhost/CV-FinalProject/php/createUpdateUser.php",
-               data: $("form").serialize(), // serializes the form's data
-               success: function(data) //This code runs when the request was successful
-               {
-                   console.log('Success! CV Saved', data);
-               },
-               error: function(error) { //This code runs when there is a problem with sending the request
-                 console.error('Error in submitting form: ', error);
-               }
-        });
-        e.preventDefault(); // avoid to execute the actual submit of the form.
 
-    });
-    */
+    var user_id = window.location.hash.substr(1); //Get the section after hash tag from URL, e.g. index.html#Arik return 'Arik'
+    console.log("user: ", user_id);
+    function get_user_data(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserData.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+
+    function get_user_networks(user_id, network_name){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserSocialNetworks.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+
+    function getNetworkName(id){
+        var msg = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/getSocialNetworks.php",
+            async: false
+        }).responseText;
+        msg = JSON.parse(msg);
+        for (var i = 0; i < msg.length; i++) {
+            if(msg[i].id == id){
+                return msg[i].name;
+            }
+        }
+        return null;
+    }
+
+    function get_user_education(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserEducation.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+
+    function get_user_experience(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserExperience.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+
+    function get_user_pro(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserProSkills.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+    function getProSkillName(id){
+        var msg = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/getProSkills.php",
+            async: false
+        }).responseText;
+        msg = JSON.parse(msg);
+        for (var i = 0; i < msg.length; i++) {
+            if(msg[i].id == id){
+                return msg[i].name;
+            }
+        }
+        return null;
+    }
+    function get_user_per(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserPerSkills.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+    function getPerSkillName(id){
+        var msg = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/getPerSkills.php",
+            async: false
+        }).responseText;
+        msg = JSON.parse(msg);
+        for (var i = 0; i < msg.length; i++) {
+            if(msg[i].id == id){
+                return msg[i].name;
+            }
+        }
+        return null;
+    }
+    function get_user_hobbies(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserHobbies.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+    function get_user_languages(user_id){
+        var data = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/get_user_data/getUserLanguages.php?user_id=" + user_id,
+            async: false
+        }).responseText;
+        data = JSON.parse(data);
+        return data;
+    }
+/*
+    console.log("get_user_data:",get_user_data(1));
+    console.log("get_user_networks:",get_user_networks(1));
+    console.log("get_user_experience:",get_user_experience(1));
+    console.log("get_user_education:",get_user_education(1));
+    console.log("get_user_per:",get_user_per(1));
+    console.log("get_user_pro:",get_user_pro(1));
+    console.log("get_user_hobbies:",get_user_hobbies(1));
+    console.log("get_user_languages:",get_user_languages(1));*/
 
     //get the social networks
     $.get('http://localhost/CV-FinalProject/php/getSocialNetworks.php', function(data) {
