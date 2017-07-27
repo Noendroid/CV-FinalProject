@@ -43,7 +43,7 @@
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
 
             function deleteUser(id) {
-           // function below will run clear.php?h=michael
+                // function below will run clear.php?h=michael
                 $.ajax({
                    type: "GET",
                    url: "http://localhost/CV-FinalProject/php/deleteUser.php" ,
@@ -55,6 +55,9 @@
                    }
                 });
                 location.reload();
+            }
+            function editUser(id) {
+                window.location.href = "http://localhost/CV-FinalProject/createUpdateForm.html#" + id;
             }
         </script>
     </body>

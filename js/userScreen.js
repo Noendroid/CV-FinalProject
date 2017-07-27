@@ -25,7 +25,9 @@ $(function(){
               html += '<td>'+ data[index].email +'</td>';
               html += '<td>';
               html += "<input type='button' name='" + data[index].id + "' value='Delete' onclick='deleteUser(this.name)'>" +'</td>';
-              html += '<td>'+ "<input type='button' value='Edit'>" +'</td>';
+              html += '<td>';
+              html += "<input type='button' name='" + data[index].id + "' value='Edit' onclick='editUser(this.name)'>";
+              html += '</td>';
               html += '</tr>';
               // ending of the user line
           }
