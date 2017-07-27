@@ -121,6 +121,20 @@ $(function(){
         data = JSON.parse(data);
         return data;
     }
+    function getLanguageName(id){
+        var msg = $.ajax({
+            type: "GET",
+            url: "http://localhost/CV-FinalProject/php/getLanguages.php",
+            async: false
+        }).responseText;
+        msg = JSON.parse(msg);
+        for (var i = 0; i < msg.length; i++) {
+            if(msg[i].id == id){
+                return msg[i].name;
+            }
+        }
+        return null;
+    }
 /*
     console.log("get_user_data:",get_user_data(1));
     console.log("get_user_networks:",get_user_networks(1));
@@ -224,6 +238,13 @@ $(function(){
         html += '</table>';
         html += "</section>";
         $('#hobbies').append(html);
+        if(user_id > 0){
+            data = get_user_hobbies(user_id);
+            console.log("user_hobbies: ",data);
+            for (var i = 0; i < data.length; i++) {
+                document.getElementsByName(data[i].value)[0].checked = true;
+            }
+        }
     });
 
     //get the languages
@@ -240,12 +261,18 @@ $(function(){
         html += '</ul>';
         html += "</section>";
         $('#languages').append(html);
+        if(user_id > 0){
+            data = get_user_languages(user_id);
+            console.log("user_languages: ",data);
+            for (var i = 0; i < data.length; i++) {
+                document.getElementsByName(getLanguageName(data[i].language_id))[0].value = data[i].value;
+            }
+        }
     });
-
     if(user_id > 0){
         //  user data
         data = get_user_data(user_id);
-        console.log(data);
+        console.log("user_data", data);
         document.getElementsByName("first_name")[0].value = data.first_name;
         document.getElementsByName("last_name")[0].value = data.last_name;
         document.getElementsByName("degree")[0].value = data.degree;
@@ -254,6 +281,66 @@ $(function(){
         document.getElementsByName("email")[0].value = data.email;
         document.getElementsByName("about_me")[0].value = data.about_me;
 
+        //  user experience
+        data = get_user_experience(user_id);
+        document.getElementsByName("exp_num")[0].value = data.length;
+        console.log("user_experience", data);
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += "<section id='experience'>";
+            html += "<section>";
+            html += "<input type='text' name='exp_title_" + i + "' placeholder='Title'><br><br>";
+            html += "<input type='text' name='exp_start_" + i + "' class='datepicker' placeholder='start date'><br><br>";
+            html += "<input type='text' name='exp_end_" + i + "' class='datepicker' placeholder='end date'><br><br>";
+            html += "</section>";
+            html += "<section>";
+            html += "<input type='text' name='exp_company_" + i + "' placeholder='Company name'><br><br>";
+            html += "<textarea rows='4' cols='35' name='exp_description_" + i + "' placeholder='Description'></textarea><br><br>";
+            html += "</section>";
+            html += "</section>";
+        }
+        $('#experience_data').html(html);
+        $( ".datepicker" ).datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        for (var i = 0; i < data.length; i++) {
+            document.getElementsByName('exp_title_' + i)[0].value = data[i].title;
+            document.getElementsByName('exp_start_' + i)[0].value = data[i].start_date;
+            document.getElementsByName('exp_end_' + i)[0].value = data[i].end_date;
+            document.getElementsByName('exp_company_' + i)[0].value = data[i].company;
+            document.getElementsByName('exp_description_' + i)[0].value = data[i].description;
+        }
 
+        //  user education
+        data = get_user_education(user_id);
+        document.getElementsByName("edu_num")[0].value = data.length;
+        console.log("user_education", data);
+        var html = "";
+        for (var i = 0; i < data.length; i++) {
+            html += "<section id='edu'>";
+            html += "<section>";
+            html += "<input type='text' name='edu_title_" + i + "' placeholder='Title'><br><br>";
+            html += "<input type='text' name='edu_start_" + i + "' class='datepicker' placeholder='start date'><br><br>";
+            html += "<input type='text' name='edu_end_" + i + "' class='datepicker' placeholder='end date'><br><br>";
+            html += "</section>";
+            html += "<section>";
+            html += "<input type='text' name='edu_place_" + i + "' placeholder='Place'><br><br>";
+            html += "<textarea rows='4' cols='35' name='edu_description_" + i + "' placeholder='Description'></textarea><br><br>";
+            html += "</section>";
+            html += "</section>";
+        }
+        $('#edu_data').html(html);
+        $( ".datepicker" ).datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        for (var i = 0; i < data.length; i++) {
+            document.getElementsByName('edu_title_' + i)[0].value = data[i].title;
+            document.getElementsByName('edu_start_' + i)[0].value = data[i].start_date;
+            document.getElementsByName('edu_end_' + i)[0].value = data[i].end_date;
+            document.getElementsByName('edu_place_' + i)[0].value = data[i].location;
+            document.getElementsByName('edu_description_' + i)[0].value = data[i].description;
+        }
+        $(window).scrollTop(0);
+        //window.scrollTo(0, document.body.scrollHeight);
     }
 });
