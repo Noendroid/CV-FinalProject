@@ -180,14 +180,16 @@
                 var serializedData = $form.serialize();
 
                 $inputs.prop("disabled", true);
+                var user_id = window.location.hash.substr(1);
                 request = $.ajax({
-                    url: "http://localhost/CV-FinalProject/php/createUpdateUser.php",
+                    url: "http://localhost/CV-FinalProject/php/createUpdateUser.php?edit_id=" + user_id,
                     type: "post",
                     data: serializedData
                 });
 
                 request.done(function (response, textStatus, jqXHR){
                     // Log a message to the console
+                    
                     $("#responseDiv").html(response);
                 });
                 // Callback handler that will be called on failure

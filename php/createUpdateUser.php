@@ -74,6 +74,9 @@ if (isset($_POST) && !empty($_POST)){
 	$user_id = $user_id['MAX(id)'];
 	//this will be the id for the user
 	$user_id++;
+	if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+		$user_id--;
+	}
 	// HEADER - PART 1
 	if (empty($_POST['first_name'])) {
 		$errs[] = "First name is empty";
@@ -423,9 +426,41 @@ if (isset($_POST) && !empty($_POST)){
 			}
 		}
 	}
+	function delete_user($user_id){
+		$dbParams = array (
+		  'hostname' => 'localhost',
+		  'username' => 'root',
+		  'password' => '',
+		  'database' => 'project'
+		);
+		$mysqli = new mysqli($dbParams['hostname'], $dbParams['username'], $dbParams['password'], $dbParams['database']);
 
+		$sql_users = "DELETE FROM users WHERE id = '" . $user_id . "';";
+	    $sql_user_social_networks = "DELETE FROM user_social_networks WHERE user_id = '" . $user_id . "';";
+	    $sql_user_pro_skills = "DELETE FROM user_pro_skills WHERE user_id = '" . $user_id . "';";
+	    $sql_user_per_skills = "DELETE FROM user_per_skills WHERE user_id = '" . $user_id . "';";
+	    $sql_user_languages = "DELETE FROM user_languages WHERE user_id = '" . $user_id . "';";
+	    $sql_user_hobbies = "DELETE FROM user_hobbies WHERE user_id = '" . $user_id . "';";
+	    $sql_user_experience = "DELETE FROM user_experience WHERE user_id = '" . $user_id . "';";
+	    $sql_user_education = "DELETE FROM user_education WHERE user_id = '" . $user_id . "';";
+
+	    $result = $mysqli->query($sql_users);
+	    $result = $mysqli->query($sql_user_social_networks);
+	    $result = $mysqli->query($sql_user_pro_skills);
+	    $result = $mysqli->query($sql_user_per_skills);
+	    $result = $mysqli->query($sql_user_languages);
+	    $result = $mysqli->query($sql_user_hobbies);
+	    $result = $mysqli->query($sql_user_experience);
+	    $result = $mysqli->query($sql_user_education);
+	}
 	$query_error = false;
 	if($validated){
+		/*
+		IF IT IS AN EDIT SO WE NEED TO DELETE ALL THE OLD DATA FIRST
+		*/
+		if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+			delete_user($_GET['edit_id']);
+		}
 		$mysqli->query($users_query);
 		foreach ($networks_queries as $key => $value) {
 			if($query_error == false){
@@ -506,6 +541,8 @@ if (isset($_POST) && !empty($_POST)){
 		echo "</div><br>";
 	}
 	if($query_error){
+		delete_user($user_id);
+		/*
 		$sql_users = "DELETE FROM users WHERE id = '" . $user_id . "';";
 	    $sql_user_social_networks = "DELETE FROM user_social_networks WHERE user_id = '" . $user_id . "';";
 	    $sql_user_pro_skills = "DELETE FROM user_pro_skills WHERE user_id = '" . $user_id . "';";
@@ -523,7 +560,7 @@ if (isset($_POST) && !empty($_POST)){
 	    $result = $mysqli->query($sql_user_hobbies);
 	    $result = $mysqli->query($sql_user_experience);
 	    $result = $mysqli->query($sql_user_education);
-
+*/
 		echo "<div>";
 		foreach ($errs as $value) {
 			echo " *  " . $value . "<br>";
