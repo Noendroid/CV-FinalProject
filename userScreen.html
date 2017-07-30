@@ -29,7 +29,8 @@
                 </section>
 
                 <aside class="aside-style">
-                    <input type="button" name="addUser" value="Add User">
+                    <button class="add-user" name="addUser" onkeypress="addUser()"
+                    onclick="location.href = 'http://localhost/CV-FinalProject/createUpdateForm.html';">Add User</button>
                 </aside>
             </section>
         </section>
@@ -66,6 +67,9 @@
             }
             function editUser(id) {
                 window.location.href = "http://localhost/CV-FinalProject/createUpdateForm.html#" + id;
+            }
+            function addUser() {
+                window.location.href = "http://localhost/CV-FinalProject/createUpdateForm.html";
             }
         </script>
     </body>
