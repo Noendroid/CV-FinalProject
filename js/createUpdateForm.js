@@ -179,7 +179,7 @@ $(function(){
         for (var i = 0; i < data.length; i++) {
             html += "<il>";
             html += data[i].name;
-            html += "<input type='text' name='" + data[i].name + "' placeholder='insert a number between 1 - 100'>";
+            html += "<input type='text' name='" + data[i].name + "' placeholder='1 - 100'>";
             html += "</il>";
         }
         html += '</ul>';// closing the table tytles
@@ -203,7 +203,7 @@ $(function(){
         for (var i = 0; i < data.length; i++) {
             html += "<il>";
             html += data[i].name;
-            html += "<input type='text' name='" + data[i].name + "' placeholder='insert a number between 1 - 100'>";
+            html += "<input type='text' name='" + data[i].name + "' placeholder='1 - 100'>";
             html += "</il>";
         }
         html += '</ul>';// closing the table tytles
@@ -255,7 +255,7 @@ $(function(){
         html += '<ul>';
         for (var i = 0; i < data.length; i++) {
             html += "<li>";
-            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " level between 1 - 100'>";
+            html += "<input type='text' name='" + data[i].name + "' placeholder='" + data[i].name + " (1 - 100)'>";
             html += "</li>";
         }
         html += '</ul>';

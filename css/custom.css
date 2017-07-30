@@ -2,6 +2,7 @@ body
 {
     font-family: 'Open Sans',sans-serif;
     font-size: 70%;
+    background: #E3E8F8;
 }
 
 h2 {
@@ -57,6 +58,7 @@ progress::-webkit-progress-value {
 }
 #cv
 {
+    background: #ffffff;
     width: 900px;
     margin: 0 auto;
     margin-top: 20px;

@@ -1,3 +1,15 @@
+body {
+    background: #E3E8F8;
+}
+#form {
+    width: 900px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #203562;
+    background: #ffffff;
+    box-shadow: -1px 2px 5px 0px rgba(0,0,0,0.75);
+}
 #description
 {
     width: 900px;
@@ -104,10 +116,6 @@ h2
     list-style: none;
     width: 130%;
 }
-input
-{
-    width: 90%
-}
 #submit {
     width: 50%;
     margin-left: 25%;
@@ -123,4 +131,37 @@ input
     color: #FF5252;
     border-style: dashed;
     border-width: 1px;
+}
+input
+{
+    width: 91%;
+    border-radius: 7px;
+    background: #E3E8F8;
+    border-style: hidden;
+}
+input::placeholder{
+    text-align: center;
+}
+input[type="submit"]
+{
+    width: 91%;
+    font-weight: bolder;
+    border-radius: 7px;
+    background: #DBF094;
+    border-style: hidden;
+}
+textarea{
+    width: 91%;
+    border-radius: 7px;
+    background: #E3E8F8;
+    border-style: hidden;
+}
+textarea::placeholder{
+    text-align: center;
+}
+select{
+    background: #FECEAB;
+}
+h3 {
+    padding-left: 10%;
 }
