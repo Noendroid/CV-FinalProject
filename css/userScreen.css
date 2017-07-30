@@ -23,8 +23,8 @@ header h1{
     margin: 1%;
 }
 .add-user{
-    width: auto;
-    height: 80%;
+    width: 100%;
+    height: auto;
     background: #2DB6A3;
     font-family: cursive;
     font-weight: bolder;
