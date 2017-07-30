@@ -74,9 +74,7 @@ if (isset($_POST) && !empty($_POST)){
 	$user_id = $user_id['MAX(id)'];
 	//this will be the id for the user
 	$user_id++;
-	if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
-		$user_id--;
-	}
+
 	// HEADER - PART 1
 	if (empty($_POST['first_name'])) {
 		$errs[] = "First name is empty";
@@ -120,8 +118,18 @@ if (isset($_POST) && !empty($_POST)){
 			mysqli_real_escape_string($mysqli, $_POST['about_me']),
 			mysqli_real_escape_string($mysqli, $_POST['degree'])
 		);
-		$users_query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
-        values ("%s","%s","%s","%s","%s","%s","%s");', $user_values);// insert to users table
+		if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+			$user_values[] = mysqli_real_escape_string($mysqli, $_GET['edit_id']);
+			$users_query = vsprintf('UPDATE users
+				SET
+				first_name="%s", last_name="%s", phone="%s", email="%s",
+				address="%s", about_me="%s", degree="%s"
+				WHERE
+				id="%s"',$user_values);
+		} else{
+			$users_query = vsprintf('insert into users (first_name,last_name,phone,email,address,about_me,degree)
+	        values ("%s","%s","%s","%s","%s","%s","%s");', $user_values);// insert to users table
+		}
 	}
 	// SOCIAL NETWORKS - PART 2
 	$social_networks = "SELECT * FROM social_networks;";
@@ -132,19 +140,33 @@ if (isset($_POST) && !empty($_POST)){
 	$networks_empty = true;
 	$networks_first = array_search($data[0]['name'], array_keys($_POST));
 	$networks_data = array_slice($_POST, $networks_first, sizeof($data));
+	if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+		$sql_delete_old_data = "DELETE FROM user_social_networks WHERE user_id='" . $_GET['edit_id'] . "';";
+		$result = mysqli_query($mysqli, $sql_delete_old_data);
+	}
 	foreach ($networks_data as $key => $value) {
 		if(!empty($value)){
 			$networks_empty = false;
 			$networks_sql = "SELECT id FROM social_networks WHERE name='" . $key . "';";
 			$result = $mysqli->query($networks_sql);
 			$network_id = $result->fetch_assoc()['id'];
-			$networks_values = array(
-				$network_id,
-				$user_id,
-				$value
-			);
-			$networks_queries[] = vsprintf('insert into user_social_networks (network_id,user_id,value)
-	        values ("%s","%s","%s");', $networks_values);// insert to users table
+			if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+				$networks_values = array(
+					$network_id,
+					$_GET['edit_id'],
+					$value
+				);
+				$networks_queries[] = vsprintf('insert into user_social_networks (network_id,user_id,value)
+				values ("%s","%s","%s");', $networks_values);// insert to users table
+			} else{
+				$networks_values = array(
+					$network_id,
+					$user_id,
+					$value
+				);
+				$networks_queries[] = vsprintf('insert into user_social_networks (network_id,user_id,value)
+				values ("%s","%s","%s");', $networks_values);// insert to users table
+			}
 		}
 	}
 	if($networks_empty){
@@ -166,6 +188,10 @@ if (isset($_POST) && !empty($_POST)){
 		$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
 		//create a dictionary of the experience section
 		$counter = 0;
+		if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+			$sql_delete_old_data = "DELETE FROM user_experience WHERE user_id='" . $_GET['edit_id'] . "';";
+			$result = mysqli_query($mysqli, $sql_delete_old_data);
+		}
 		foreach ($experience_data as $key => $value) { // for each key and value
 			$counter++;
 			if (!empty($value)) { // if the value is not empty
@@ -177,16 +203,30 @@ if (isset($_POST) && !empty($_POST)){
 				if(isset($experience_values)){
 					if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 5
 						// it means that all the fields were full
-						$values_exp = array(
-				            mysqli_real_escape_string($mysqli, $user_id),
-							mysqli_real_escape_string($mysqli, $experience_values[0]),
-							mysqli_real_escape_string($mysqli, $experience_values[3]),
-							mysqli_real_escape_string($mysqli, $experience_values[1]),
-							mysqli_real_escape_string($mysqli, $experience_values[2]),
-							mysqli_real_escape_string($mysqli, $experience_values[4])
-						);
-						$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
-				        values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+
+						if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+							$values_exp = array(
+					            mysqli_real_escape_string($mysqli, $_GET['edit_id']),
+								mysqli_real_escape_string($mysqli, $experience_values[0]),
+								mysqli_real_escape_string($mysqli, $experience_values[3]),
+								mysqli_real_escape_string($mysqli, $experience_values[1]),
+								mysqli_real_escape_string($mysqli, $experience_values[2]),
+								mysqli_real_escape_string($mysqli, $experience_values[4])
+							);
+							$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
+							values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+						} else{
+							$values_exp = array(
+								mysqli_real_escape_string($mysqli, $user_id),
+								mysqli_real_escape_string($mysqli, $experience_values[0]),
+								mysqli_real_escape_string($mysqli, $experience_values[3]),
+								mysqli_real_escape_string($mysqli, $experience_values[1]),
+								mysqli_real_escape_string($mysqli, $experience_values[2]),
+								mysqli_real_escape_string($mysqli, $experience_values[4])
+							);
+							$experience_queries[] = vsprintf('insert into user_experience (user_id,title,company,start_date,end_date,description)
+							values ("%s","%s","%s","%s","%s","%s");', $values_exp);// insert to user_experience table
+						}
 					}
 				}
 				else {
@@ -230,6 +270,10 @@ if (isset($_POST) && !empty($_POST)){
 	$pro_empty = true;
 	$counter = 0;
 	// check if all the data in per skills in correct
+	if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+		$sql_delete_old_data = "DELETE FROM user_per_skills WHERE user_id='" . $_GET['edit_id'] . "';";
+		$result = mysqli_query($mysqli, $sql_delete_old_data);
+	}
 	foreach ($per_data as $key => $value) {
 		if(!empty($value)){
 			if(!is_numeric($value)){
@@ -244,13 +288,23 @@ if (isset($_POST) && !empty($_POST)){
 					break;
 				}
 				else if($value != 0){
-					$per_values = array(
-						mysqli_real_escape_string($mysqli, $per_skills[$counter]['id']),
-						mysqli_real_escape_string($mysqli, $user_id),
-						mysqli_real_escape_string($mysqli, $value)
-					);
-					$per_queries[] = vsprintf('insert into user_per_skills (skill_id,user_id,value)
-					values ("%s","%s","%s");', $per_values);// insert to user_per_skills table
+					if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+						$per_values = array(
+							mysqli_real_escape_string($mysqli, $per_skills[$counter]['id']),
+							mysqli_real_escape_string($mysqli, $_GET['edit_id']),
+							mysqli_real_escape_string($mysqli, $value)
+						);
+						$per_queries[] = vsprintf('insert into user_per_skills (skill_id,user_id,value)
+						values ("%s","%s","%s");', $per_values);// insert to user_per_skills table
+					} else{
+						$per_values = array(
+							mysqli_real_escape_string($mysqli, $per_skills[$counter]['id']),
+							mysqli_real_escape_string($mysqli, $user_id),
+							mysqli_real_escape_string($mysqli, $value)
+						);
+						$per_queries[] = vsprintf('insert into user_per_skills (skill_id,user_id,value)
+						values ("%s","%s","%s");', $per_values);// insert to user_per_skills table
+					}
 				}
 			}
 			$counter++;
@@ -262,6 +316,10 @@ if (isset($_POST) && !empty($_POST)){
 	}
 	// check if all the data in pro skills in correct
 	$counter = 0;
+	if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+		$sql_delete_old_data = "DELETE FROM user_pro_skills WHERE user_id='" . $_GET['edit_id'] . "';";
+		$result = mysqli_query($mysqli, $sql_delete_old_data);
+	}
 	foreach ($pro_data as $key => $value) {
 		if(!empty($value)){
 			if(!is_numeric($value)){
@@ -276,13 +334,23 @@ if (isset($_POST) && !empty($_POST)){
 					break;
 				}
 				else if($value != 0){
-					$pro_values = array(
-						mysqli_real_escape_string($mysqli, $pro_skills[$counter]['id']),
-						mysqli_real_escape_string($mysqli, $user_id),
-						mysqli_real_escape_string($mysqli, $value)
-					);
-					$pro_queries[] = vsprintf('insert into user_pro_skills (skill_id,user_id,value)
-					values ("%s","%s","%s");', $pro_values);// insert to user_pro_skills table
+					if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+						$pro_values = array(
+							mysqli_real_escape_string($mysqli, $pro_skills[$counter]['id']),
+							mysqli_real_escape_string($mysqli, $_GET['edit_id']),
+							mysqli_real_escape_string($mysqli, $value)
+						);
+						$pro_queries[] = vsprintf('insert into user_pro_skills (skill_id,user_id,value)
+						values ("%s","%s","%s");', $pro_values);// insert to user_per_skills table
+					} else{
+						$pro_values = array(
+							mysqli_real_escape_string($mysqli, $pro_skills[$counter]['id']),
+							mysqli_real_escape_string($mysqli, $user_id),
+							mysqli_real_escape_string($mysqli, $value)
+						);
+						$pro_queries[] = vsprintf('insert into user_pro_skills (skill_id,user_id,value)
+						values ("%s","%s","%s");', $pro_values);// insert to user_pro_skills table
+					}
 				}
 			}
 			$counter++;
@@ -326,6 +394,10 @@ if (isset($_POST) && !empty($_POST)){
 }
 	$education_data = array_slice($_POST, $education_first, $education_last - $education_first);
 	$counter = 0;
+	if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+		$sql_delete_old_data = "DELETE FROM user_education WHERE user_id='" . $_GET['edit_id'] . "';";
+		$result = mysqli_query($mysqli, $sql_delete_old_data);
+	}
 	foreach ($education_data as $key => $value) { // for each key and value
 		$counter++;
 		if (!empty($value)) { // if the value is not empty
@@ -337,6 +409,18 @@ if (isset($_POST) && !empty($_POST)){
 			if(isset($education_values)){
 				if(sizeof($education_values) === 5){// if the number of not values is also 5
 					// it means that all the fields were full
+					if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+						$values_edu = array(
+							$_GET['edit_id'],
+							mysqli_real_escape_string($mysqli, $education_values[0]),//title
+							mysqli_real_escape_string($mysqli, $education_values[3]),//location
+							mysqli_real_escape_string($mysqli, $education_values[1]),//start
+							mysqli_real_escape_string($mysqli, $education_values[2]),//end
+							mysqli_real_escape_string($mysqli, $education_values[4])//description
+						);
+						$education_queries[] = vsprintf('insert into user_education (user_id,title,location,start_date,end_date,description)
+						values ("%s","%s","%s","%s","%s","%s");', $values_edu);// insert to user_education table
+					}
 					$values_edu = array(
 			            $user_id,
 						mysqli_real_escape_string($mysqli, $education_values[0]),//title
@@ -349,14 +433,14 @@ if (isset($_POST) && !empty($_POST)){
 			        values ("%s","%s","%s","%s","%s","%s");', $values_edu);// insert to user_education table
 				}
 				else {
-					$errs[] = "Something is wrong with the education section" . sizeof($education_values);
+					$errs[] = "Something is wrong with the education";
 					$validated = false;
 					$edu_empty = true;
 					break;
 				}
 			}
 			else {
-				$errs[] = "Something is wrong with the education section";
+				$errs[] = "Something is wrong with the education";
 				$validated = false;
 				$edu_empty = true;
 				break;
@@ -368,17 +452,31 @@ if (isset($_POST) && !empty($_POST)){
 	// HOBBIES - PART 6
 	if(!empty($hobbies_first)){
 		$hobbies_data = array_slice($_POST, $hobbies_first, $languages_first - $hobbies_first);
+		if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+			$sql_delete_old_data = "DELETE FROM user_hobbies WHERE user_id='" . $_GET['edit_id'] . "';";
+			$result = mysqli_query($mysqli, $sql_delete_old_data);
+		}
 		foreach ($hobbies_data as $key => $value) {
 			$hobby_sql = "SELECT id FROM hobbies WHERE name='" . $key . "';";
 			$result = $mysqli->query($hobby_sql);
 			$hobby_id = $result->fetch_assoc()['id'];
-			$hobbies_values = array(
-				mysqli_real_escape_string($mysqli, $hobby_id),
-				mysqli_real_escape_string($mysqli, $user_id),
-				mysqli_real_escape_string($mysqli, $value)
-			);
-			$hobbies_queries[] = vsprintf('insert into user_hobbies (hobby_id,user_id,value)
-			values ("%s","%s","%s");', $hobbies_values);// insert to user_hobbies table
+			if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+				$hobbies_values = array(
+					mysqli_real_escape_string($mysqli, $hobby_id),
+					mysqli_real_escape_string($mysqli, $_GET['edit_id']),
+					mysqli_real_escape_string($mysqli, $value)
+				);
+				$hobbies_queries[] = vsprintf('insert into user_hobbies (hobby_id,user_id,value)
+				values ("%s","%s","%s");', $hobbies_values);// insert to user_hobbies table
+			} else{
+				$hobbies_values = array(
+					mysqli_real_escape_string($mysqli, $hobby_id),
+					mysqli_real_escape_string($mysqli, $user_id),
+					mysqli_real_escape_string($mysqli, $value)
+				);
+				$hobbies_queries[] = vsprintf('insert into user_hobbies (hobby_id,user_id,value)
+				values ("%s","%s","%s");', $hobbies_values);// insert to user_hobbies table
+			}
 		}
 	}
 	else{
@@ -389,20 +487,35 @@ if (isset($_POST) && !empty($_POST)){
 	if(!empty($languages_first)){
 		$languages_data = array_slice($_POST, $languages_first);
 		$languages_error = false;
+		if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+			$sql_delete_old_data = "DELETE FROM user_languages WHERE user_id='" . $_GET['edit_id'] . "';";
+			$result = mysqli_query($mysqli, $sql_delete_old_data);
+		}
 		foreach ($languages_data as $key => $value) {
 			if(is_numeric($value)){
 				if($value > 0 and $value <= 100){
 					$languages_sql = "SELECT id FROM languages WHERE name='" . $key . "';";
 					$result = $mysqli->query($languages_sql);
 					$language_id = $result->fetch_assoc()['id'];
-					$languages_values = array(
-						mysqli_real_escape_string($mysqli, $language_id),
-						mysqli_real_escape_string($mysqli, $user_id),
-						mysqli_real_escape_string($mysqli, $value)
-					);
-					$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
-					values ("%s","%s","%s");', $languages_values);// insert to user_languages table
-					continue;
+					if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
+						$languages_values = array(
+							mysqli_real_escape_string($mysqli, $language_id),
+							mysqli_real_escape_string($mysqli, $_GET['edit_id']),
+							mysqli_real_escape_string($mysqli, $value)
+						);
+						$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
+						values ("%s","%s","%s");', $languages_values);// insert to user_languages table
+						continue;
+					} else{
+						$languages_values = array(
+							mysqli_real_escape_string($mysqli, $language_id),
+							mysqli_real_escape_string($mysqli, $user_id),
+							mysqli_real_escape_string($mysqli, $value)
+						);
+						$languages_queries[] = vsprintf('insert into user_languages (language_id,user_id,value)
+						values ("%s","%s","%s");', $languages_values);// insert to user_languages table
+						continue;
+					}
 				}
 				else {
 					$languages_error = true;
@@ -457,11 +570,12 @@ if (isset($_POST) && !empty($_POST)){
 	if($validated){
 		/*
 		IF IT IS AN EDIT SO WE NEED TO DELETE ALL THE OLD DATA FIRST
-		*/
+
 		if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
 			delete_user($_GET['edit_id']);
-		}
+		}*/
 		$mysqli->query($users_query);
+
 		foreach ($networks_queries as $key => $value) {
 			if($query_error == false){
 				$result = $mysqli->query($value);
