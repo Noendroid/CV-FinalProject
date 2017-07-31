@@ -125,6 +125,7 @@ progress::-webkit-progress-value {
 }
 #experience_and_skills {
     display: flex;
+    align-items: stretch;
 }
 #skills {
     width: 33.3%;
