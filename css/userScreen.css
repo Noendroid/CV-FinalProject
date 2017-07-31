@@ -23,16 +23,19 @@ header h1{
     margin: 1%;
 }
 .add-user{
-    width: 100%;
-    height: auto;
-    background: #2DB6A3;
+    margin-left: 50%;
+    margin-top: 50%;
+    min-width: 100px;
+    min-height: 100px;
+    background: #A6E3E9;
     font-family: cursive;
     font-weight: bolder;
-    border-radius: 10px;
+    border-radius: 50px;
 }
 .add-user:hover{
-    background: #FCCF4D;
+    background: #CBF1F5;
 }
+
 #content {
     background: #ffffff;
     padding-bottom: 20px;

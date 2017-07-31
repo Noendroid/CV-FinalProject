@@ -110,11 +110,16 @@ h2
 }
 [type="checkbox"]
 {
-    min-width: 45px;
+    min-width: 20px;
+    min-height: 20px;
+    margin-right: 20px;
 }
 #languages ul {
     list-style: none;
     width: 130%;
+}
+#languages ul li{
+    margin-bottom: 3%;
 }
 #submit {
     width: 50%;
@@ -164,4 +169,34 @@ select{
 }
 h3 {
     padding-left: 10%;
+}
+.back-button{
+    margin-left: 40%;
+    min-width: 20%;
+    min-height: 10vw;
+    margin-top: 50px;
+    border-top-right-radius: 500px;
+    border-top-left-radius:  500px;
+    background: #8BC34A;
+    color: #fff;
+    font-family: cursive;
+    font-weight: bolder;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 200%;
+    border-style: solid;
+    border-top-width: thick;
+    border-right-width: thick;
+    border-left-width: thick;
+    border-top-color: #8BC34A;
+    border-bottom-color: #8BC34A;
+    border-right-color: #8BC34A;
+    border-left-color: #8BC34A;
+}
+.back-button:hover{
+    background: #689F38;
+    border-top-color: #689F38;
+    border-bottom-color: #689F38;
+    border-right-color: #689F38;
+    border-left-color: #689F38;
 }
