@@ -176,15 +176,22 @@ if (isset($_POST) && !empty($_POST)){
 	// EXPERIENCE - PART 3
 	// finding the first per skill in the database
 	// this way we will know where the experiences ends in the $_POST
-	$sql_per_skills = "SELECT name FROM per_skills;";
+	$sql_per_skills = "SELECT name FROM per_skills LIMIT 1;";
+	$sql_pro_skills = "SELECT name FROM pro_skills LIMIT 1;";
 	$result = $mysqli->query($sql_per_skills);
 	unset($data);
 	while ($a = $result->fetch_assoc()) {
 		$data[] = $a;
 	}
+	$result = $mysqli->query($sql_pro_skills);
+	while ($a = $result->fetch_assoc()) {
+		$data[] = $a;
+	}
+	$first_per = array_search($data[0]['name'], array_keys($_POST));
+	$first_pro = array_search($data[1]['name'], array_keys($_POST));
 	$exp_empty = true;
 	if($experience_first = array_search("exp_title_0", array_keys($_POST))){
-		$experience_last = array_search($data[0]['name'], array_keys($_POST));
+		$experience_last = ($first_pro < $first_per ? $first_pro : $first_per);
 		$experience_data = array_slice($_POST, $experience_first, $experience_last - $experience_first);
 		//create a dictionary of the experience section
 		$counter = 0;
@@ -203,7 +210,6 @@ if (isset($_POST) && !empty($_POST)){
 				if(isset($experience_values)){
 					if(sizeof($experience_values) % 5 == 0){// if the number of not values is also 5
 						// it means that all the fields were full
-
 						if(isset($_GET['edit_id']) and !empty($_GET['edit_id'])){
 							$values_exp = array(
 					            mysqli_real_escape_string($mysqli, $_GET['edit_id']),

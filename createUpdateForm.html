@@ -191,8 +191,11 @@
 
                 request.done(function (response, textStatus, jqXHR){
                     // Log a message to the console
-
-                    $("#responseDiv").html(response);
+                    if(response){
+                        $("#responseDiv").html(response);
+                    } else {
+                        window.location.href = "http://localhost/CV-FinalProject/userScreen.html";
+                    }
                 });
                 // Callback handler that will be called on failure
                 request.fail(function (jqXHR, textStatus, errorThrown){
